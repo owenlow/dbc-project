@@ -1,4 +1,4 @@
-package db;
+package edu.rit.cs.dbc;
 
 /**
  *
