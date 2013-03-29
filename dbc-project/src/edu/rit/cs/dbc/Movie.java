@@ -10,8 +10,9 @@ public class Movie {
     private int year, movie_id;
     private float rating;
 
-    public Movie(String title, int year, int movie_id, float rating) {
+    public Movie(String title, String genre, int year, int movie_id, float rating) {
         this.title = title;
+        this.genre = genre;
         this.year = year;
         this.movie_id = movie_id;
         this.rating = rating;
