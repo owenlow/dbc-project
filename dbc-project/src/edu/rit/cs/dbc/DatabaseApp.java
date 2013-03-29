@@ -12,11 +12,15 @@ public class DatabaseApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println("main starting");
+        String user = "p48501a";
+        String pass = "legend6spiky7gorge";
+        
         DatabaseConnection db = new DatabaseConnection();
-        if (args.length == 2) {
-            db.connect(args[0], args[1]);
-            System.out.println("Connection successful");
-            db.close();
-        }
+        
+        db.connect(user, pass);
+        System.out.println("Connection successful");
+        db.close();
+        
     }
 }
