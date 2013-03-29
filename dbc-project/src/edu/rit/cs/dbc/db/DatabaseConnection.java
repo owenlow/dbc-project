@@ -48,6 +48,8 @@ public class DatabaseConnection {
                     System.err.println("Could not find postgresql Driver");
                 }
                 
+            } else {
+                System.out.println("Non-matching credentials");
             }
         }
     }

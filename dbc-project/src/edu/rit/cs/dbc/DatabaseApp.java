@@ -14,7 +14,7 @@ public class DatabaseApp {
     public static void main(String[] args) {
         System.out.println("main starting");
         String user = "p48501a";
-        String pass = "legend6spiky7gorge";
+        String pass = "uixohphieshiechu";
         
         DatabaseConnection db = new DatabaseConnection();
         
