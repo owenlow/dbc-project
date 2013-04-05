@@ -8,14 +8,14 @@ package edu.rit.cs.dbc;
 public class Movie {
     private String title, genre;
     private int year, movie_id;
-    private float rating;
+    private float score;
 
-    public Movie(String title, String genre, int year, int movie_id, float rating) {
+    public Movie(String title, String genre, int year, int movie_id, float score) {
         this.title = title;
         this.genre = genre;
         this.year = year;
         this.movie_id = movie_id;
-        this.rating = rating;
+        this.score = score;
     }
 
     public String getTitle() {
@@ -50,12 +50,12 @@ public class Movie {
         this.movie_id = movie_id;
     }
 
-    public float getRating() {
-        return rating;
+    public float getScore() {
+        return score;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    public void setScore(float score) {
+        this.score = score;
     }
 
     
