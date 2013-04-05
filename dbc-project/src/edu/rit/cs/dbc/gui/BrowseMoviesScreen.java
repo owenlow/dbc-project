@@ -65,7 +65,7 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title", "Year", "Genre", "Rating"
+                "Title", "Year", "Genre", "Score"
             }
         ));
         moviesTableScollPane.setViewportView(moviesTable);
