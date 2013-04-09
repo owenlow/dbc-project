@@ -1,16 +1,18 @@
+package edu.rit.cs.dbc.model;
 
-package edu.rit.cs.dbc;
+import java.util.Collection;
 
 /**
  *
  * @author pjd2424
  */
 public class Movie {
-    private String title, genre;
+    private String title;
+    private Collection<String> genre;
     private int year, movie_id;
     private float score;
 
-    public Movie(String title, String genre, int year, int movie_id, float score) {
+    public Movie(String title, Collection<String> genre, int year, int movie_id, float score) {
         this.title = title;
         this.genre = genre;
         this.year = year;
@@ -26,11 +28,11 @@ public class Movie {
         this.title = title;
     }
 
-    public String getGenre() {
+    public Collection<String> getGenres() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenres(Collection<String> genre) {
         this.genre = genre;
     }
 
@@ -58,5 +60,4 @@ public class Movie {
         this.score = score;
     }
 
-    
 }

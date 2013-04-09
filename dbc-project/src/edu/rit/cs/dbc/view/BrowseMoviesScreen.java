@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.rit.cs.dbc.gui;
+package edu.rit.cs.dbc.view;
 
 /**
  *
@@ -39,7 +39,7 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Browse Movies");
-        setName("Browse Movies Screen");
+        setName("Browse Movies Screen"); // NOI18N
 
         addToQueueButton.setText("Add to Queue");
 
