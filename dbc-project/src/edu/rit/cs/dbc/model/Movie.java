@@ -7,13 +7,14 @@ import java.util.Collection;
  * @author pjd2424
  */
 public class Movie {
-    private String title;
+    private String title, rating;
     private Collection<String> genre;
     private int year, movie_id;
     private float score;
 
-    public Movie(String title, Collection<String> genre, int year, int movie_id, float score) {
+    public Movie(String title, String rating, Collection<String> genre, int year, int movie_id, float score) {
         this.title = title;
+        this.rating = rating;
         this.genre = genre;
         this.year = year;
         this.movie_id = movie_id;
@@ -26,6 +27,14 @@ public class Movie {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public Collection<String> getGenres() {

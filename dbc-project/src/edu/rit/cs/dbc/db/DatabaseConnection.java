@@ -106,12 +106,14 @@ public class DatabaseConnection {
                     // query
                     if (!doesMovieExist) {
                         String title = resultSet.getString("title");
+                        String rating = resultSet.getString("rating");
                         String year = resultSet.getString("year");
                         Float score = resultSet.getFloat("score");
                         Collection<String> movieGenres = new ArrayList<>();
                         movieGenres.add(genre);
                         Movie currentMovie = new Movie(
                                 title, 
+                                rating, 
                                 movieGenres, 
                                 Integer.parseInt(year), 
                                 movieId, 

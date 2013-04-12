@@ -20,6 +20,7 @@ public class DatabaseApp {
         
         db.connect(user, pass);
         System.out.println("Connection successful");
+        
         db.close();
         
     }
