@@ -1,6 +1,7 @@
 package edu.rit.cs.dbc;
 
 import edu.rit.cs.dbc.db.DatabaseConnection;
+import edu.rit.cs.dbc.view.BrowseMoviesScreen;
 
 /**
  *
@@ -16,12 +17,11 @@ public class DatabaseApp {
         String user = "p48501a";
         String pass = "uixohphieshiechu";
         
-        DatabaseConnection db = new DatabaseConnection();
+        DatabaseConnection db = DatabaseConnection.getInstance();
         
         db.connect(user, pass);
         System.out.println("Connection successful");
         
-        db.close();
-        
+        BrowseMoviesScreen.createAndShowGUI();
     }
 }

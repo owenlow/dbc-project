@@ -27,7 +27,9 @@ public class DatabaseConnection {
     private Properties prop = null;
     private Connection con = null;
     
-    public DatabaseConnection() {
+    private static DatabaseConnection instance = null;
+    
+    private DatabaseConnection() {
         prop = new Properties();
         
         try {
@@ -35,6 +37,14 @@ public class DatabaseConnection {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+    
+    public static DatabaseConnection getInstance() {
+        if  (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        
+        return instance;
     }
     
     public void connect(String username, String password) {
@@ -60,8 +70,10 @@ public class DatabaseConnection {
     
     public void close() {
         try {
-            if (con != null) {
-                con.close();
+            if (instance != null) {
+                if (con != null) {
+                    con.close();
+                }
             }
         } catch (SQLException ex) {
             System.err.println("Unable to close connection");
