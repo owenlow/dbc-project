@@ -7,6 +7,8 @@ package edu.rit.cs.dbc.view;
 import edu.rit.cs.dbc.controller.MovieTableController;
 import java.util.Arrays;
 import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -31,7 +33,7 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
      * the text box.
      */
     private void filterMovieResults(String columnToFilter) {
-        RowFilter<MovieTableModel, Object> rf = null;
+        RowFilter<MovieTableModel, Object> rf;
         //If current expression doesn't parse, don't update.
         try {
             int columnIndex = Arrays.asList(MovieTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
@@ -58,7 +60,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         filterByLabel = new javax.swing.JLabel();
         filterByComboBox = new javax.swing.JComboBox();
         filterByTextField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         addToQueueButton = new javax.swing.JButton();
 
@@ -77,12 +78,28 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         filterByComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Title", "Year", "Genre", "Rating" }));
         filterByComboBox.setSelectedIndex(-1);
 
-        searchButton.setText("Search");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
+        filterByTextField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    if (filterByComboBox.getSelectedItem() != null &&
+                        !filterByComboBox.getSelectedItem().toString().equals("")) {
+                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
+                    }
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    if (filterByComboBox.getSelectedItem() != null &&
+                        !filterByComboBox.getSelectedItem().toString().equals("")) {
+                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
+                    }
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    if (filterByComboBox.getSelectedItem() != null &&
+                        !filterByComboBox.getSelectedItem().toString().equals("")) {
+                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
+                    }
+                }
             }
-        });
+        );
 
         javax.swing.GroupLayout filterPanelLayout = new javax.swing.GroupLayout(filterPanel);
         filterPanel.setLayout(filterPanelLayout);
@@ -95,8 +112,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
                 .addComponent(filterByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(filterByTextField)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchButton)
                 .addContainerGap())
         );
         filterPanelLayout.setVerticalGroup(
@@ -106,9 +121,8 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
                 .addGroup(filterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filterByLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filterByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filterByTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButton))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addComponent(filterByTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
@@ -126,7 +140,7 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addComponent(filterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -154,14 +168,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        if (filterByComboBox.getSelectedItem() != null &&
-                !filterByComboBox.getSelectedItem().toString().equals("") &&
-                !filterByTextField.getText().equals("")) {
-            filterMovieResults(filterByComboBox.getSelectedItem().toString());
-        }
-    }//GEN-LAST:event_searchButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToQueueButton;
     private javax.swing.JPanel buttonPanel;
@@ -171,7 +177,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel filterPanel;
     private javax.swing.JTable moviesTable;
     private javax.swing.JScrollPane moviesTableScollPane;
-    private javax.swing.JButton searchButton;
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 

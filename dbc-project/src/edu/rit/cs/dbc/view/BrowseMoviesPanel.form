@@ -42,7 +42,7 @@
               <Group type="102" attributes="0">
                   <Component id="filterPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="moviesTableScollPane" pref="395" max="32767" attributes="0"/>
+                  <Component id="moviesTableScollPane" pref="396" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -81,8 +81,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="filterByTextField" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="searchButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -94,9 +92,8 @@
                           <Component id="filterByLabel" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
                           <Component id="filterByComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="filterByTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="50" max="32767" attributes="0"/>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -121,14 +118,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="filterByTextField">
-            </Component>
-            <Component class="javax.swing.JButton" name="searchButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Search"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButtonActionPerformed"/>
-              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="filterByTextField.getDocument().addDocumentListener(&#xa;    new DocumentListener() {&#xa;        public void changedUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;        public void insertUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;        public void removeUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;    }&#xa;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
