@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MovieTableModel extends AbstractTableModel {
     
-    private String[] columnNames = {
+    public static final String[] MOVIE_COLUMN_NAMES = {
         "Title", "Year", "Genre", "Rating", "Score"
     };
     
@@ -28,12 +28,12 @@ public class MovieTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return columnNames.length;
+        return MOVIE_COLUMN_NAMES.length;
     }
     
     @Override
     public String getColumnName(int col) {
-        return columnNames[col];
+        return MOVIE_COLUMN_NAMES[col];
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MovieTableModel extends AbstractTableModel {
         ArrayList<Movie> list = new ArrayList<>(movieData);
         Movie currentMovie = list.get(rowIndex);
         
-        if (columnIndex >= 0 && columnIndex < columnNames.length) {
+        if (columnIndex >= 0 && columnIndex < MOVIE_COLUMN_NAMES.length) {
             switch (getColumnName(columnIndex)) {
                 case "Title":
                     return currentMovie.getTitle();

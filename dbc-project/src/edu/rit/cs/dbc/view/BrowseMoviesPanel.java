@@ -5,6 +5,9 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
+import java.util.Arrays;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -22,6 +25,22 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     public MovieTableModel getMovieTableModel() {
         return movieTableModel;
     }
+    
+    /** 
+     * Update the row filter regular expression from the expression in
+     * the text box.
+     */
+    private void filterMovieResults(String columnToFilter) {
+        RowFilter<MovieTableModel, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+            int columnIndex = Arrays.asList(MovieTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
+            rf = RowFilter.regexFilter(filterByTextField.getText(), columnIndex);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,8 +51,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonPanel = new javax.swing.JPanel();
-        addToQueueButton = new javax.swing.JButton();
         upperPanel = new javax.swing.JPanel();
         moviesTableScollPane = new javax.swing.JScrollPane();
         moviesTable = new javax.swing.JTable();
@@ -42,32 +59,16 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         filterByComboBox = new javax.swing.JComboBox();
         filterByTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        buttonPanel = new javax.swing.JPanel();
+        addToQueueButton = new javax.swing.JButton();
 
         setName("Browse Movies Screen"); // NOI18N
+        setLayout(new java.awt.BorderLayout());
 
-        addToQueueButton.setText("Add to Queue");
-
-        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
-        buttonPanel.setLayout(buttonPanelLayout);
-        buttonPanelLayout.setHorizontalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addToQueueButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        buttonPanelLayout.setVerticalGroup(
-            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addToQueueButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        moviesTable.setAutoCreateRowSorter(true);
         MovieTableController movieTableController = new MovieTableController(this);
         movieTableController.loadMoviesTable();
         moviesTable.setModel(movieTableModel);
+        moviesTable.setRowSorter(sorter);
         moviesTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         moviesTableScollPane.setViewportView(moviesTable);
 
@@ -88,6 +89,7 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         filterPanelLayout.setHorizontalGroup(
             filterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(filterPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(filterByLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(filterByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -106,52 +108,57 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
                     .addComponent(filterByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filterByTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(upperPanelLayout.createSequentialGroup()
+            .addComponent(filterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
-                    .addComponent(filterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(upperPanelLayout.createSequentialGroup()
                 .addComponent(filterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        add(upperPanel, java.awt.BorderLayout.CENTER);
+
+        addToQueueButton.setText("Add to Queue");
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addToQueueButton)
+                .addContainerGap(372, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(upperPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addToQueueButton)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
+
+        add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         if (filterByComboBox.getSelectedItem() != null &&
-            !filterByComboBox.getSelectedItem().toString().equals("") &&
-            !filterByTextField.getText().equals("")) {
-            // TODO: filter table results
+                !filterByComboBox.getSelectedItem().toString().equals("") &&
+                !filterByTextField.getText().equals("")) {
+            filterMovieResults(filterByComboBox.getSelectedItem().toString());
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
@@ -169,5 +176,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private MovieTableModel movieTableModel = new MovieTableModel();
+    private TableRowSorter<MovieTableModel> sorter = new TableRowSorter<>(movieTableModel);
 
 }
