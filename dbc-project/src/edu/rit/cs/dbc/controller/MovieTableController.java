@@ -6,12 +6,10 @@ package edu.rit.cs.dbc.controller;
 
 import edu.rit.cs.dbc.db.DatabaseConnection;
 import edu.rit.cs.dbc.model.Movie;
-import edu.rit.cs.dbc.view.BrowseMoviesScreen;
+import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 import edu.rit.cs.dbc.view.MovieTableModel;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 /**
@@ -20,9 +18,9 @@ import javax.swing.SwingWorker;
  */
 public class MovieTableController {
     
-    private BrowseMoviesScreen browseMoviesScreen;
+    private BrowseMoviesPanel browseMoviesScreen;
     
-    public MovieTableController(BrowseMoviesScreen browseMoviesScreen) {
+    public MovieTableController(BrowseMoviesPanel browseMoviesScreen) {
         this.browseMoviesScreen = browseMoviesScreen;
     }
     

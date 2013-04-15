@@ -1,7 +1,7 @@
 package edu.rit.cs.dbc;
 
 import edu.rit.cs.dbc.db.DatabaseConnection;
-import edu.rit.cs.dbc.view.BrowseMoviesScreen;
+import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 
 /**
  *
@@ -21,7 +21,5 @@ public class DatabaseApp {
         
         db.connect(user, pass);
         System.out.println("Connection successful");
-        
-        BrowseMoviesScreen.createAndShowGUI();
     }
 }

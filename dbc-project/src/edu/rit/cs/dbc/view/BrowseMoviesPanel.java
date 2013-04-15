@@ -5,63 +5,22 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
-import edu.rit.cs.dbc.db.DatabaseConnection;
 
 /**
  *
  * @author ptr5201
  */
-public class BrowseMoviesScreen extends javax.swing.JFrame {
+public class BrowseMoviesPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form BrowseMoviesScreen
+     * Creates new form BrowseMoviesPanel
      */
-    public BrowseMoviesScreen() {
+    public BrowseMoviesPanel() {
         initComponents();
     }
-    
+
     public MovieTableModel getMovieTableModel() {
-       return movieTableModel;
-    }
-    
-    public static void createAndShowGUI() {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BrowseMoviesScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BrowseMoviesScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BrowseMoviesScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BrowseMoviesScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new BrowseMoviesScreen().setVisible(true);
-            }
-        });
+        return movieTableModel;
     }
 
     /**
@@ -84,14 +43,7 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
         filterByTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Browse Movies");
         setName("Browse Movies Screen"); // NOI18N
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         addToQueueButton.setText("Add to Queue");
 
@@ -112,14 +64,16 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        moviesTable.setAutoCreateRowSorter(true);
         MovieTableController movieTableController = new MovieTableController(this);
         movieTableController.loadMoviesTable();
         moviesTable.setModel(movieTableModel);
+        moviesTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         moviesTableScollPane.setViewportView(moviesTable);
 
         filterByLabel.setText("Filter by:");
 
-        filterByComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Name", "Year", "Genre" }));
+        filterByComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Title", "Year", "Genre", "Rating" }));
         filterByComboBox.setSelectedIndex(-1);
 
         searchButton.setText("Search");
@@ -172,11 +126,11 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(filterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
+                .addComponent(moviesTableScollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -191,22 +145,15 @@ public class BrowseMoviesScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         if (filterByComboBox.getSelectedItem() != null &&
-                !filterByComboBox.getSelectedItem().toString().equals("") &&
-                !filterByTextField.getText().equals("")) {
+            !filterByComboBox.getSelectedItem().toString().equals("") &&
+            !filterByTextField.getText().equals("")) {
             // TODO: filter table results
         }
     }//GEN-LAST:event_searchButtonActionPerformed
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DatabaseConnection.getInstance().close();
-        this.dispose();
-    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToQueueButton;
