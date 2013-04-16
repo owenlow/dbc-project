@@ -32,16 +32,21 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
      * Update the row filter regular expression from the expression in
      * the text box.
      */
-    private void filterMovieResults(String columnToFilter) {
-        RowFilter<MovieTableModel, Object> rf;
-        //If current expression doesn't parse, don't update.
-        try {
-            int columnIndex = Arrays.asList(MovieTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
-            rf = RowFilter.regexFilter(filterByTextField.getText(), columnIndex);
-        } catch (java.util.regex.PatternSyntaxException e) {
-            return;
+    private void filterMovieResults() {
+        if (filterByComboBox.getSelectedItem() != null &&
+                !filterByComboBox.getSelectedItem().toString().equals("")) {
+            String columnToFilter = filterByComboBox.getSelectedItem().toString();
+            
+            RowFilter<MovieTableModel, Object> rf;
+            //If current expression doesn't parse, don't update.
+            try {
+                int columnIndex = Arrays.asList(MovieTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
+                rf = RowFilter.regexFilter(filterByTextField.getText(), columnIndex);
+            } catch (java.util.regex.PatternSyntaxException e) {
+                return;
+            }
+            sorter.setRowFilter(rf);
         }
-        sorter.setRowFilter(rf);
     }
 
     /**
@@ -77,26 +82,22 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
 
         filterByComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Title", "Year", "Genre", "Rating" }));
         filterByComboBox.setSelectedIndex(-1);
+        filterByComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterByComboBoxActionPerformed(evt);
+            }
+        });
 
         filterByTextField.getDocument().addDocumentListener(
             new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
-                    if (filterByComboBox.getSelectedItem() != null &&
-                        !filterByComboBox.getSelectedItem().toString().equals("")) {
-                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
-                    }
+                    filterMovieResults();
                 }
                 public void insertUpdate(DocumentEvent e) {
-                    if (filterByComboBox.getSelectedItem() != null &&
-                        !filterByComboBox.getSelectedItem().toString().equals("")) {
-                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
-                    }
+                    filterMovieResults();
                 }
                 public void removeUpdate(DocumentEvent e) {
-                    if (filterByComboBox.getSelectedItem() != null &&
-                        !filterByComboBox.getSelectedItem().toString().equals("")) {
-                        filterMovieResults(filterByComboBox.getSelectedItem().toString());
-                    }
+                    filterMovieResults();
                 }
             }
         );
@@ -167,6 +168,10 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void filterByComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterByComboBoxActionPerformed
+        filterMovieResults();
+    }//GEN-LAST:event_filterByComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToQueueButton;

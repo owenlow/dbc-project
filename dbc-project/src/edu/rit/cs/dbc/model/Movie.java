@@ -9,15 +9,15 @@ import java.util.Collection;
 public class Movie {
     private String title, rating;
     private Collection<String> genre;
-    private int year, movie_id;
+    private int year, movieId;
     private float score;
 
-    public Movie(String title, String rating, Collection<String> genre, int year, int movie_id, float score) {
+    public Movie(String title, String rating, Collection<String> genre, int year, int movieId, float score) {
         this.title = title;
         this.rating = rating;
         this.genre = genre;
         this.year = year;
-        this.movie_id = movie_id;
+        this.movieId = movieId;
         this.score = score;
     }
 
@@ -53,12 +53,12 @@ public class Movie {
         this.year = year;
     }
 
-    public int getMovie_id() {
-        return movie_id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setMovie_id(int movie_id) {
-        this.movie_id = movie_id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public float getScore() {

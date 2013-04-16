@@ -24,8 +24,8 @@ import java.util.Properties;
  */
 public class DatabaseConnection {
     
-    private Properties prop = null;
-    private Connection con = null;
+    private static Properties prop = null;
+    private static Connection con = null;
     
     private static DatabaseConnection instance = null;
     
@@ -44,28 +44,48 @@ public class DatabaseConnection {
             instance = new DatabaseConnection();
         }
         
+        connect();
+        
         return instance;
     }
     
-    public void connect(String username, String password) {
-        if (prop != null) {
-            if (username.equals(prop.getProperty("db.username")) && 
-                    digestPassword(password).equals(prop.getProperty("db.password"))) {
-                
-                try {
-                    String connectionUrl = prop.getProperty("db.connectionUrl") + username; 
-                    Class.forName(prop.getProperty("db.driver"));
-                    con = DriverManager.getConnection(connectionUrl, username, password);
-                } catch (SQLException ex) {
-                    System.err.println("Could not connect to database");
-                } catch (ClassNotFoundException ex) {
-                    System.err.println("Could not find postgresql Driver");
+    private static void connect() {
+        try {
+            if (prop != null && 
+                    (con == null || (con != null && con.isClosed()))) {
+                String connectionUrl = prop.getProperty("db.connectionUrl") 
+                        + prop.getProperty("db.username"); 
+                Class.forName(prop.getProperty("db.driver"));
+                con = DriverManager.getConnection(
+                        connectionUrl, 
+                        prop.getProperty("db.username"), 
+                        prop.getProperty("db.password"));
+            }
+        } catch (SQLException ex) {
+            System.err.println("Could not connect to database");
+        } catch (ClassNotFoundException ex) {
+            System.err.println("Could not find postgresql Driver");
+        }
+    }
+    
+    public boolean memberLogin(String username, String password) {
+        if (con != null) {
+            try {
+                PreparedStatement statement = 
+                        con.prepareStatement("select password from member where username = ?");
+                statement.setString(1, username);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    if (digestPassword(password).equals(resultSet.getString("password"))) {
+                        return true;
+                    }
                 }
-                
-            } else {
-                System.out.println("Non-matching credentials");
+            } catch (SQLException ex) {
+                System.err.println("Error executing member login query");
             }
         }
+        
+        return false;
     }
     
     public void close() {
@@ -106,7 +126,7 @@ public class DatabaseConnection {
                         Iterator<Movie> it = allMovies.iterator();
                         while (it.hasNext() && !doesMovieExist) {
                             Movie existingMovie = it.next();
-                            if (movieId == existingMovie.getMovie_id()) {
+                            if (movieId == existingMovie.getMovieId()) {
                                 doesMovieExist = true;
                                 existingMovie.getGenres().add(genre);
                             }

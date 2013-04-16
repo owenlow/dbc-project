@@ -116,10 +116,13 @@
                 </Property>
                 <Property name="selectedIndex" type="int" value="-1"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filterByComboBoxActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="filterByTextField">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="filterByTextField.getDocument().addDocumentListener(&#xa;    new DocumentListener() {&#xa;        public void changedUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;        public void insertUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;        public void removeUpdate(DocumentEvent e) {&#xa;            if (filterByComboBox.getSelectedItem() != null &amp;&amp;&#xa;                    !filterByComboBox.getSelectedItem().toString().equals(&quot;&quot;)) {&#xa;                filterMovieResults(filterByComboBox.getSelectedItem().toString());&#xa;            }&#xa;        }&#xa;    }&#xa;);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="filterByTextField.getDocument().addDocumentListener(&#xa;    new DocumentListener() {&#xa;        public void changedUpdate(DocumentEvent e) {&#xa;            filterMovieResults();&#xa;        }&#xa;        public void insertUpdate(DocumentEvent e) {&#xa;            filterMovieResults();&#xa;        }&#xa;        public void removeUpdate(DocumentEvent e) {&#xa;            filterMovieResults();&#xa;        }&#xa;    }&#xa;);"/>
               </AuxValues>
             </Component>
           </SubComponents>
