@@ -27,22 +27,11 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         TabPane = new javax.swing.JTabbedPane();
-        browsePannel = new BrowseMoviesPanel();
+        browseMoviesPanel1 = new edu.rit.cs.dbc.view.BrowseMoviesPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout browsePannelLayout = new javax.swing.GroupLayout(browsePannel);
-        browsePannel.setLayout(browsePannelLayout);
-        browsePannelLayout.setHorizontalGroup(
-            browsePannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
-        );
-        browsePannelLayout.setVerticalGroup(
-            browsePannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
-        );
-
-        TabPane.addTab("Browse", browsePannel);
+        TabPane.addTab("Browse", browseMoviesPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,6 +83,6 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabPane;
-    private javax.swing.JPanel browsePannel;
+    private edu.rit.cs.dbc.view.BrowseMoviesPanel browseMoviesPanel1;
     // End of variables declaration//GEN-END:variables
 }

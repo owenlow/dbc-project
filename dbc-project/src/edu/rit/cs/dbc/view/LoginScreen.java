@@ -159,7 +159,8 @@ public class LoginScreen extends javax.swing.JFrame {
                 setVisible(false);
                 dispose();
                 // TODO: replace with loading Main Frame
-                DatabaseApp.createAndShowGUI();
+                //DatabaseApp.createAndShowGUI();
+                new DatabaseMainFrame().setVisible(true);
             } else {
                 DatabaseConnection.getInstance().close();
                 setInvalidLoginLabelVisible(true);
