@@ -72,6 +72,7 @@ public class LoginScreen extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         invalidLoginLabel = new javax.swing.JLabel();
         invalidLoginLabel.setVisible(false);
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Movie Database App");
@@ -104,6 +105,13 @@ public class LoginScreen extends javax.swing.JFrame {
         invalidLoginLabel.setForeground(new java.awt.Color(255, 0, 0));
         invalidLoginLabel.setText("Login failed");
 
+        jButton1.setText("New Account");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,14 +125,16 @@ public class LoginScreen extends javax.swing.JFrame {
                             .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usernameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(usernameTextField)
                             .addComponent(passwordTextField)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(loginButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
                             .addComponent(invalidLoginLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loginButton))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,7 +151,9 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(invalidLoginLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(loginButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginButton)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -168,8 +180,16 @@ public class LoginScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Open newuser frame
+        setVisible(false);
+        dispose();
+        DatabaseApp.createAndShowNewUserFrame();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel invalidLoginLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordTextField;

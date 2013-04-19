@@ -88,6 +88,46 @@ public class DatabaseConnection {
         return false;
     }
     
+    public boolean usernameExists( String username ) {
+        if (con != null) {
+            try {
+                PreparedStatement statement = 
+                        con.prepareStatement("select * from member where username = ?");
+                statement.setString(1, username);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    if (username.equals(resultSet.getString("username"))) {
+                        return true;
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error checking for member existance");
+            }
+        }
+        return false;
+    }
+    
+    public boolean createUser( String username, String fullname, String password ) {
+        
+        if (con != null) {
+            try {
+                PreparedStatement statement = 
+                        con.prepareStatement("insert into member (username, fullname, password) values ( ?, ?, ? )");
+                statement.setString(1, username);
+                statement.setString(2, fullname);
+                statement.setString(3, digestPassword(password));
+                
+                statement.execute();
+                return true;
+            } catch (SQLException ex) {
+                System.err.println(ex.toString());
+                System.err.println("Error inserting new member");
+            }
+        }
+        return false;
+        
+    }
+    
     public void close() {
         try {
             if (instance != null) {

@@ -3,6 +3,7 @@ package edu.rit.cs.dbc;
 import edu.rit.cs.dbc.db.DatabaseConnection;
 import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 import edu.rit.cs.dbc.view.LoginScreen;
+import edu.rit.cs.dbc.view.NewUserCreation;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
  */
 public class DatabaseApp {
 
+    static LoginScreen login;
     /**
      * @param args the command line arguments
      */
@@ -23,7 +25,8 @@ public class DatabaseApp {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginScreen().setVisible(true);
+                login = new LoginScreen();
+                login.setVisible(true);
             }
         });
     }
@@ -53,4 +56,17 @@ public class DatabaseApp {
         frame.pack();
         frame.setVisible(true);
     }
+    
+    public static void createAndShowNewUserFrame() {
+        NewUserCreation frame = new NewUserCreation();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(480, 300);
+        
+        frame.setVisible(true);
+    }
+    
+    public static void displayLogin() {
+        login.setVisible(true);
+    }
+    
 }
