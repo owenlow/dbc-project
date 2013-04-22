@@ -6,7 +6,8 @@ package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.DatabaseApp;
 import edu.rit.cs.dbc.db.DatabaseConnection;
-import java.awt.Color;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -30,187 +31,246 @@ public class NewUserCreation extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jLabel6 = new javax.swing.JLabel();
+        userFormPanel = new javax.swing.JPanel();
+        usernameLabel = new javax.swing.JLabel();
+        fullNameLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        verifyPasswordLabel = new javax.swing.JLabel();
+        usernameTextField = new javax.swing.JTextField();
+        verifyPasswordTextField = new javax.swing.JPasswordField();
+        fullNameTextField = new javax.swing.JTextField();
+        passwordTextField = new javax.swing.JPasswordField();
+        errorAndButtonPanel = new javax.swing.JPanel();
+        errorLabel = new javax.swing.JLabel();
+        errorLabel.setVisible(false);
+        closeButton = new javax.swing.JButton();
+        createAccountButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("New User");
 
-        jLabel1.setText("Username:");
+        usernameLabel.setText("Username:");
 
-        jLabel2.setText("Full Name:");
+        fullNameLabel.setText("Full Name:");
 
-        jLabel3.setText("Password:");
+        passwordLabel.setText("Password:");
 
-        jLabel4.setText("Verify Password:");
+        verifyPasswordLabel.setText("Verify Password:");
 
-        jButton1.setText("Create Account");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        org.jdesktop.layout.GroupLayout userFormPanelLayout = new org.jdesktop.layout.GroupLayout(userFormPanel);
+        userFormPanel.setLayout(userFormPanelLayout);
+        userFormPanelLayout.setHorizontalGroup(
+            userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(userFormPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(userFormPanelLayout.createSequentialGroup()
+                        .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(fullNameLabel)
+                            .add(usernameLabel))
+                        .add(52, 52, 52)
+                        .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(fullNameTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .add(usernameTextField)))
+                    .add(userFormPanelLayout.createSequentialGroup()
+                        .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(passwordLabel)
+                            .add(verifyPasswordLabel))
+                        .add(18, 18, 18)
+                        .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(passwordTextField)
+                            .add(verifyPasswordTextField))))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        userFormPanelLayout.setVerticalGroup(
+            userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(userFormPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(usernameLabel)
+                    .add(usernameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(fullNameLabel)
+                    .add(fullNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(passwordLabel)
+                    .add(passwordTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(verifyPasswordLabel)
+                    .add(verifyPasswordTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        usernameTextField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+            }
+        );
+        verifyPasswordTextField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+            }
+        );
+        fullNameTextField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+            }
+        );
+        passwordTextField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    setErrorLabel(false, "");
+                }
+            }
+        );
+
+        errorLabel.setForeground(new java.awt.Color(255, 0, 0));
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("Error Label");
+        errorLabel.setName(""); // NOI18N
+
+        closeButton.setText("Close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                closeButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Close");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        createAccountButton.setText("Create Account");
+        createAccountButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                createAccountButtonActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Username exists");
-        jLabel5.setForeground(Color.red);
-        jLabel5.setVisible(false);
-
-        jLabel6.setText("Passwords don't match");
-        jLabel6.setForeground(Color.red);
-        jLabel6.setVisible(false);
+        org.jdesktop.layout.GroupLayout errorAndButtonPanelLayout = new org.jdesktop.layout.GroupLayout(errorAndButtonPanel);
+        errorAndButtonPanel.setLayout(errorAndButtonPanelLayout);
+        errorAndButtonPanelLayout.setHorizontalGroup(
+            errorAndButtonPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(errorAndButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(errorAndButtonPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(errorAndButtonPanelLayout.createSequentialGroup()
+                        .add(closeButton)
+                        .add(18, 18, 18)
+                        .add(createAccountButton)
+                        .add(0, 50, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        errorAndButtonPanelLayout.setVerticalGroup(
+            errorAndButtonPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(errorAndButtonPanelLayout.createSequentialGroup()
+                .add(errorLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 11, Short.MAX_VALUE)
+                .add(errorAndButtonPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(closeButton)
+                    .add(createAccountButton))
+                .addContainerGap())
+        );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(27, 27, 27)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel4)
-                            .add(jLabel3)
-                            .add(jLabel2)
-                            .add(jLabel1))
-                        .add(18, 18, 18)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jTextField4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .add(jPasswordField2)
-                            .add(jPasswordField1)
-                            .add(jTextField3))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 29, Short.MAX_VALUE)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel6)
-                            .add(jLabel5))
-                        .add(18, 18, 18))
-                    .add(layout.createSequentialGroup()
-                        .add(jButton2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jButton1)))
-                .add(20, 20, 20))
+            .add(errorAndButtonPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .add(userFormPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(29, 29, 29)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(jTextField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel5))
+                .add(userFormPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTextField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel2))
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel3)
-                            .add(jPasswordField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(layout.createSequentialGroup()
-                        .add(30, 30, 30)
-                        .add(jLabel6)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel4)
-                    .add(jPasswordField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 80, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
-                    .add(jButton2))
-                .add(20, 20, 20))
+                .add(errorAndButtonPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        if (new String(jPasswordField1.getPassword()).equals(new String(jPasswordField2.getPassword()))) {
-            if (!DatabaseConnection.getInstance().usernameExists(jTextField4.getText())) {
-                if (DatabaseConnection.getInstance().createUser(
-                    jTextField4.getText(), jTextField3.getText(), new String(jPasswordField1.getPassword()))) {
-                    dispose();
-                    DatabaseApp.displayLogin();
+    private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
+        if (!"".equals(usernameTextField.getText()) &&
+                !"".equals(fullNameTextField.getText()) && 
+                !"".equals(new String(passwordTextField.getPassword())) &&
+                !"".equals(new String(verifyPasswordTextField.getPassword()))) {
+            
+            if (new String(passwordTextField.getPassword()).equals(new String(verifyPasswordTextField.getPassword()))) {
+                if (!DatabaseConnection.getInstance().usernameExists(usernameTextField.getText())) {
+                    if (DatabaseConnection.getInstance().createUser(
+                        usernameTextField.getText(), fullNameTextField.getText(), new String(passwordTextField.getPassword()))) {
+                        dispose();
+                        DatabaseApp.displayLogin();
+                    }
+                } else {
+                    setErrorLabel(true, "Username exists");
                 }
             } else {
-                jLabel5.setVisible(true);
+                setErrorLabel(true, "Passwords don't match");
             }
         } else {
-            jLabel6.setVisible(true);
+            setErrorLabel(true, "One or more empty fields");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_createAccountButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         // Close
         dispose();
         DatabaseApp.displayLogin();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_closeButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewUserCreation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewUserCreation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewUserCreation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewUserCreation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void setErrorLabel(boolean visible, String errorMessage) {
+        if (errorLabel.isVisible() != visible) {
+            errorLabel.setVisible(visible);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NewUserCreation().setVisible(true);
-            }
-        });
+        errorLabel.setText(errorMessage);
+        pack();
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JButton createAccountButton;
+    private javax.swing.JPanel errorAndButtonPanel;
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel fullNameLabel;
+    private javax.swing.JTextField fullNameTextField;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JPasswordField passwordTextField;
+    private javax.swing.JPanel userFormPanel;
+    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JTextField usernameTextField;
+    private javax.swing.JLabel verifyPasswordLabel;
+    private javax.swing.JPasswordField verifyPasswordTextField;
     // End of variables declaration//GEN-END:variables
 }
