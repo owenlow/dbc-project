@@ -27,12 +27,14 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         TabPane = new javax.swing.JTabbedPane();
-        browseMoviesPanel1 = new edu.rit.cs.dbc.view.BrowseMoviesPanel();
+        browseMoviesPanel = new edu.rit.cs.dbc.view.BrowseMoviesPanel();
+        memberQueuePanel = new edu.rit.cs.dbc.view.MemberQueueScreen();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         TabPane.setPreferredSize(new java.awt.Dimension(500, 600));
-        TabPane.addTab("Browse", browseMoviesPanel1);
+        TabPane.addTab("Browse", browseMoviesPanel);
+        TabPane.addTab("Queue", memberQueuePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,6 +90,7 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabPane;
-    private edu.rit.cs.dbc.view.BrowseMoviesPanel browseMoviesPanel1;
+    private edu.rit.cs.dbc.view.BrowseMoviesPanel browseMoviesPanel;
+    private edu.rit.cs.dbc.view.MemberQueueScreen memberQueuePanel;
     // End of variables declaration//GEN-END:variables
 }

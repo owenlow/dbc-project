@@ -12,13 +12,11 @@ public class Member {
     private int memberId;
     private String fullName;
     private String username;
-    private String password;
     
-    public Member(int memberId, String fullName, String username, String password) {
+    public Member(int memberId, String fullName, String username) {
         this.memberId = memberId;
         this.fullName = fullName;
         this.username = username;
-        this.password = password;
     }
 
     public int getMemberId() {
@@ -43,13 +41,5 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

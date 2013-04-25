@@ -48,11 +48,20 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Component class="edu.rit.cs.dbc.view.BrowseMoviesPanel" name="browseMoviesPanel1">
+        <Component class="edu.rit.cs.dbc.view.BrowseMoviesPanel" name="browseMoviesPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Browse">
                 <Property name="tabTitle" type="java.lang.String" value="Browse"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="edu.rit.cs.dbc.view.MemberQueueScreen" name="memberQueuePanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Queue">
+                <Property name="tabTitle" type="java.lang.String" value="Queue"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

@@ -227,8 +227,8 @@ public class NewUserCreation extends javax.swing.JFrame {
                 !"".equals(new String(verifyPasswordTextField.getPassword()))) {
             
             if (new String(passwordTextField.getPassword()).equals(new String(verifyPasswordTextField.getPassword()))) {
-                if (!DatabaseConnection.getInstance().usernameExists(usernameTextField.getText())) {
-                    if (DatabaseConnection.getInstance().createUser(
+                if (!DatabaseConnection.getInstance().memberExists(usernameTextField.getText())) {
+                    if (DatabaseConnection.getInstance().createMember(
                         usernameTextField.getText(), fullNameTextField.getText(), new String(passwordTextField.getPassword()))) {
                         dispose();
                         DatabaseApp.displayLogin();

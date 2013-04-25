@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author ptr5201
  */
-public class MovieTableModel extends AbstractTableModel {
+public class MoviesTableModel extends AbstractTableModel {
     
     public static final String[] MOVIE_COLUMN_NAMES = {
         "Title", "Year", "Genre", "Rating", "Score"

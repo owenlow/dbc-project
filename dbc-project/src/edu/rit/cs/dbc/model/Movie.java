@@ -68,5 +68,21 @@ public class Movie {
     public void setScore(float score) {
         this.score = score;
     }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(movieId);
+        sb.append("; ");
+        sb.append(title);
+        sb.append("; ");
+        sb.append(genre);
+        sb.append("; ");
+        sb.append(year);
+        sb.append("; ");
+        sb.append(rating);
+        sb.append("; ");
+        sb.append(score);
+        return sb.toString();
+    }
 
 }

@@ -4,6 +4,7 @@
  */
 package edu.rit.cs.dbc.db;
 
+import edu.rit.cs.dbc.model.Member;
 import edu.rit.cs.dbc.model.Movie;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -26,6 +27,7 @@ public class DatabaseConnection {
     
     private static Properties prop = null;
     private static Connection con = null;
+    private static Member currentMember = null;
     
     private static DatabaseConnection instance = null;
     
@@ -35,7 +37,7 @@ public class DatabaseConnection {
         try {
             prop.load(getClass().getResourceAsStream("db.properties"));
         } catch (IOException ex) {
-            System.err.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
     
@@ -63,51 +65,66 @@ public class DatabaseConnection {
             }
         } catch (SQLException ex) {
             System.err.println("Could not connect to database");
+            ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             System.err.println("Could not find postgresql Driver");
+            ex.printStackTrace();
         }
     }
     
     public boolean memberLogin(String username, String password) {
-        if (con != null) {
-            try {
-                PreparedStatement statement = 
-                        con.prepareStatement("select password from member where username = ?");
-                statement.setString(1, username);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    if (digestPassword(password).equals(resultSet.getString("password"))) {
-                        return true;
-                    }
-                }
-            } catch (SQLException ex) {
-                System.err.println("Error executing member login query");
-            }
-        }
+        boolean validLogin = false;
         
-        return false;
-    }
-    
-    public boolean usernameExists( String username ) {
         if (con != null) {
             try {
                 PreparedStatement statement = 
                         con.prepareStatement("select * from member where username = ?");
                 statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
+                while (resultSet.next() && !validLogin) {
+                    if (digestPassword(password).equals(resultSet.getString("password"))) {
+                        currentMember = new Member(
+                                resultSet.getInt("member_id"), 
+                                resultSet.getString("fullname"), 
+                                resultSet.getString("username")
+                        );
+                        validLogin = true;
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error executing member login query");
+                ex.printStackTrace();
+            }
+        }
+        
+        return validLogin;
+    }
+    
+    public boolean memberExists( String username ) {
+        boolean memberExists = false;
+        
+        if (con != null) {
+            try {
+                PreparedStatement statement = 
+                        con.prepareStatement("select * from member where username = ?");
+                statement.setString(1, username);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next() && !memberExists) {
                     if (username.equals(resultSet.getString("username"))) {
-                        return true;
+                        memberExists = true;
                     }
                 }
             } catch (SQLException ex) {
                 System.err.println("Error checking for member existance");
+                ex.printStackTrace();
             }
         }
-        return false;
+        
+        return memberExists;
     }
     
-    public boolean createUser( String username, String fullname, String password ) {
+    public boolean createMember( String username, String fullname, String password ) {
+        boolean successfulMemberCreation = false;
         
         if (con != null) {
             try {
@@ -118,14 +135,14 @@ public class DatabaseConnection {
                 statement.setString(3, digestPassword(password));
                 
                 statement.execute();
-                return true;
+                successfulMemberCreation = true;
             } catch (SQLException ex) {
-                System.err.println(ex.toString());
                 System.err.println("Error inserting new member");
+                ex.printStackTrace();
             }
         }
-        return false;
         
+        return successfulMemberCreation;
     }
     
     public void close() {
@@ -137,6 +154,7 @@ public class DatabaseConnection {
             }
         } catch (SQLException ex) {
             System.err.println("Unable to close connection");
+            ex.printStackTrace();
         }
     }
     
@@ -156,7 +174,7 @@ public class DatabaseConnection {
                 while (resultSet.next()) {
                     Integer movieId = resultSet.getInt("movie_id");
                     String genre = resultSet.getString("genre");
-                    
+
                     // check to see if the current movie matches with
                     // an existing movie that was already added. if this
                     // is the case, then a new genre needs to be added
@@ -172,7 +190,7 @@ public class DatabaseConnection {
                             }
                         }
                     }
-                    
+
                     // if a movie hasn't been added to the collection yet,
                     // then create an instance using the values from the
                     // query
@@ -183,15 +201,14 @@ public class DatabaseConnection {
                         Float score = resultSet.getFloat("score");
                         Collection<String> movieGenres = new ArrayList<>();
                         movieGenres.add(genre);
-                        Movie currentMovie = new Movie(
+                        Movie movieResult = new Movie(
                                 title, 
                                 rating, 
                                 movieGenres, 
                                 Integer.parseInt(year), 
                                 movieId, 
                                 score);
-                        
-                        allMovies.add(currentMovie);
+                        allMovies.add(movieResult);
                     }
                 }
                 
@@ -199,12 +216,87 @@ public class DatabaseConnection {
             }
         } catch (SQLException sqle) {
             System.err.println("Database access error when retrieving all movies");
+            sqle.printStackTrace();
         }
         
         return allMovies;
     }
+
+    public Collection<Movie> getQueueMovies() {
+        Collection<Movie> queueMovies = new ArrayList<>();
+        
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    // get all the movies from the database, including each
+                    // movie's list of genres
+                    PreparedStatement statement = con.prepareStatement(
+                            "select * from movie"
+                            + " natural join genre"
+                            + " natural join queue where"
+                            + " member_id = ?");
+                    statement.setInt(1, currentMember.getMemberId());
+                    ResultSet resultSet = statement.executeQuery();
+
+                    // add each movie record to the collection of movies to
+                    // be returned. a movie with multiple genres will show up
+                    // in multiple records, but with different genres
+                    while (resultSet.next()) {
+                        Integer movieId = resultSet.getInt("movie_id");
+                        String genre = resultSet.getString("genre");
+
+                        // check to see if the current movie matches with
+                        // an existing movie that was already added. if this
+                        // is the case, then a new genre needs to be added
+                        // to the list of genres
+                        boolean doesMovieExist = false;
+                        if (!queueMovies.isEmpty()) {
+                            Iterator<Movie> it = queueMovies.iterator();
+                            while (it.hasNext() && !doesMovieExist) {
+                                Movie existingMovie = it.next();
+                                if (movieId == existingMovie.getMovieId()) {
+                                    doesMovieExist = true;
+                                    existingMovie.getGenres().add(genre);
+                                }
+                            }
+                        }
+
+                        // if a movie hasn't been added to the collection yet,
+                        // then create an instance using the values from the
+                        // query
+                        if (!doesMovieExist) {
+                            String title = resultSet.getString("title");
+                            String rating = resultSet.getString("rating");
+                            String year = resultSet.getString("year");
+                            Float score = resultSet.getFloat("score");
+                            Collection<String> movieGenres = new ArrayList<>();
+                            movieGenres.add(genre);
+                            Movie movieResult = new Movie(
+                                    title, 
+                                    rating, 
+                                    movieGenres, 
+                                    Integer.parseInt(year), 
+                                    movieId, 
+                                    score);
+                            queueMovies.add(movieResult);
+                        }
+                    }
+
+                    statement.close();
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Database access error when"
+                        + " retrieving movies in member's queue");
+                sqle.printStackTrace();
+            }
+        }
+        
+        return queueMovies;
+    }
     
     private String digestPassword(String password) {
+        String digestedPassword = "";
+        
         password = password + prop.getProperty("db.salt");
         byte input[] = password.getBytes();
         
@@ -217,13 +309,78 @@ public class DatabaseConnection {
                 sb.append(String.format("%02x", b & 0xff));
             }
             
-            return sb.toString();
+            digestedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
             System.err.println("Message digest algorithm " 
                     + prop.getProperty("db.mdAlgorithm")
                     + " does not exist");
         }
         
-        return "";
+        return digestedPassword;
+    }
+    
+    /**
+     * NOTE: this method throws a NullPointerException if called
+     * from one of methods that returns a collection of movies;
+     * needs fixing
+     * @param resultSet
+     * @param movieCollection
+     * @return 
+     */
+    private Movie constructMovie(ResultSet resultSet, Collection<Movie> movieCollection) {
+        Movie movieResult = null;
+        
+        try {
+            System.out.println(Thread.currentThread().toString() + ": getting movieId and genre");
+            Integer movieId = resultSet.getInt("movie_id");
+            String genre = resultSet.getString("genre");
+
+            // check to see if the current movie matches with
+            // an existing movie that was already added. if this
+            // is the case, then a new genre needs to be added
+            // to the list of genres
+            boolean doesMovieExist = false;
+            if (!movieCollection.isEmpty()) {
+                System.out.println(Thread.currentThread().toString() + ": movieCollection not empty");
+                Iterator<Movie> it = movieCollection.iterator();
+                System.out.println(Thread.currentThread().toString() + ": got iterator");
+                while (it.hasNext() && !doesMovieExist) {
+                    System.out.println(Thread.currentThread().toString() + ": iterator has next and movie not found yet");
+                    Movie existingMovie = it.next();
+                    System.out.println(Thread.currentThread().toString() + ": got a movie: " + existingMovie);
+                    System.out.println(Thread.currentThread().toString() + ": movieId(" + movieId + ") == existingMovie.ID(" + existingMovie.getMovieId() + ")");
+                    if (movieId.intValue() == existingMovie.getMovieId()) {
+                        System.out.println(Thread.currentThread().toString() + ": movie matched");
+                        doesMovieExist = true;
+                        existingMovie.getGenres().add(genre);
+                        System.out.println(Thread.currentThread().toString() + ": genre added: " + genre);
+                    }
+                }
+            }
+
+            // if a movie hasn't been added to the collection yet,
+            // then create an instance using the values from the
+            // query
+            if (!doesMovieExist) {
+                String title = resultSet.getString("title");
+                String rating = resultSet.getString("rating");
+                String year = resultSet.getString("year");
+                Float score = resultSet.getFloat("score");
+                Collection<String> movieGenres = new ArrayList<>();
+                movieGenres.add(genre);
+                movieResult = new Movie(
+                        title, 
+                        rating, 
+                        movieGenres, 
+                        Integer.parseInt(year), 
+                        movieId, 
+                        score);
+            }
+        } catch (SQLException sqle) {
+            System.err.println("Constructing movie with invalid result set");
+            sqle.printStackTrace();
+        }
+        
+        return movieResult;
     }
 }
