@@ -4,18 +4,16 @@
  */
 package edu.rit.cs.dbc.view;
 
-import edu.rit.cs.dbc.controller.MovieTableController;
-
 /**
  *
- * @author ptr5201
+ * @author owen
  */
-public class MemberQueuePanel extends javax.swing.JPanel {
+public class RecentPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form MemberQueuePanel
+     * Creates new form RecentPanel
      */
-    public MemberQueuePanel() {
+    public RecentPanel() {
         initComponents();
     }
 
@@ -29,19 +27,18 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         upperPanel = new javax.swing.JPanel();
-        moviesQueueScrollPane = new javax.swing.JScrollPane();
-        moviesQueueTable = new javax.swing.JTable();
+        recentScrollPane = new javax.swing.JScrollPane();
+        recentTable = new javax.swing.JTable();
         buttonPanel = new javax.swing.JPanel();
-        purchaseButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
+        rewatchButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(495, 561));
         setLayout(new java.awt.BorderLayout());
 
-        MovieTableController movieTableController = new MovieTableController(queueMoviesTableModel);
-        movieTableController.loadQueueMoviesTable();
-        moviesQueueTable.setModel(queueMoviesTableModel);
-        moviesQueueTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        moviesQueueScrollPane.setViewportView(moviesQueueTable);
+        recentTable.setModel(recentMoviesTableModel);
+        recentTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        recentScrollPane.setViewportView(recentTable);
 
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
@@ -49,14 +46,14 @@ public class MemberQueuePanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -64,7 +61,19 @@ public class MemberQueuePanel extends javax.swing.JPanel {
 
         buttonPanel.setPreferredSize(new java.awt.Dimension(400, 58));
 
-        purchaseButton.setText("Purchase");
+        clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
+        rewatchButton.setText("Rewatch");
+        rewatchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rewatchButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
@@ -72,26 +81,39 @@ public class MemberQueuePanel extends javax.swing.JPanel {
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseButton)
-                .addContainerGap(294, Short.MAX_VALUE))
+                .addComponent(clearButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rewatchButton)
+                .addContainerGap(217, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseButton)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearButton)
+                    .addComponent(rewatchButton))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void rewatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rewatchButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rewatchButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JScrollPane moviesQueueScrollPane;
-    private javax.swing.JTable moviesQueueTable;
-    private javax.swing.JButton purchaseButton;
+    private javax.swing.JButton clearButton;
+    private javax.swing.JScrollPane recentScrollPane;
+    private javax.swing.JTable recentTable;
+    private javax.swing.JButton rewatchButton;
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
-
-    private MoviesTableModel queueMoviesTableModel = new MoviesTableModel();
+    private MoviesTableModel recentMoviesTableModel = new MoviesTableModel();
 }
