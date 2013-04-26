@@ -10,12 +10,12 @@ import edu.rit.cs.dbc.controller.MovieTableController;
  *
  * @author ptr5201
  */
-public class MemberQueueScreen extends javax.swing.JPanel {
+public class MemberQueuePanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form MemberQueueScreen
+     * Creates new form MemberQueuePanel
      */
-    public MemberQueueScreen() {
+    public MemberQueuePanel() {
         initComponents();
     }
 

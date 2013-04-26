@@ -57,7 +57,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="edu.rit.cs.dbc.view.MemberQueueScreen" name="memberQueuePanel">
+        <Component class="edu.rit.cs.dbc.view.MemberQueuePanel" name="memberQueuePanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Queue">

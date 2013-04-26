@@ -13,12 +13,12 @@ import javax.swing.event.DocumentListener;
  *
  * @author owen
  */
-public class NewUserCreation extends javax.swing.JFrame {
+public class NewUserCreationFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewUserCreation
+     * Creates new form NewUserCreationFrame
      */
-    public NewUserCreation() {
+    public NewUserCreationFrame() {
         initComponents();
     }
 
@@ -206,7 +206,7 @@ public class NewUserCreation extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(errorAndButtonPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .add(errorAndButtonPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .add(userFormPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(

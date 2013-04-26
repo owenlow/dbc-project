@@ -1,7 +1,7 @@
 package edu.rit.cs.dbc;
 
 import edu.rit.cs.dbc.view.LoginScreen;
-import edu.rit.cs.dbc.view.NewUserCreation;
+import edu.rit.cs.dbc.view.NewUserCreationFrame;
 import javax.swing.JFrame;
 
 /**
@@ -28,7 +28,7 @@ public class DatabaseApp {
     }
     
     public static void createAndShowNewUserFrame() {
-        NewUserCreation frame = new NewUserCreation();
+        NewUserCreationFrame frame = new NewUserCreationFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
