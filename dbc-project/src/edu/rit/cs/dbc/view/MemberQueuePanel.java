@@ -18,6 +18,16 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     public MemberQueuePanel() {
         initComponents();
     }
+    
+    public void registerController(MovieTableController movieTableController) {
+        this.movieTableController = movieTableController;
+        this.movieTableController.registerMemberQueuePanel(this);
+        this.movieTableController.loadQueueMoviesTable();
+    }
+
+    public MovieTableModel getMovieTableModel() {
+        return queueMoviesTableModel;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,8 +47,6 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(495, 561));
         setLayout(new java.awt.BorderLayout());
 
-        MovieTableController movieTableController = new MovieTableController(queueMoviesTableModel);
-        movieTableController.loadQueueMoviesTable();
         moviesQueueTable.setModel(queueMoviesTableModel);
         moviesQueueTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         moviesQueueScrollPane.setViewportView(moviesQueueTable);
@@ -93,5 +101,6 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 
-    private MoviesTableModel queueMoviesTableModel = new MoviesTableModel();
+    private MovieTableModel queueMoviesTableModel = new MovieTableModel();
+    private MovieTableController movieTableController;
 }
