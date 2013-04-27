@@ -81,7 +81,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="edu.rit.cs.dbc.view.PurchasePanel" name="purchasePanel1">
+        <Component class="edu.rit.cs.dbc.view.PurchasePanel" name="purchasePanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Purchases">

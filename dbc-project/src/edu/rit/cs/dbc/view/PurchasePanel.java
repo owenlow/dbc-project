@@ -97,5 +97,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     private javax.swing.JButton watchButton;
     // End of variables declaration//GEN-END:variables
-    private MoviesTableModel purchaseMoviesTableModel = new MoviesTableModel();
+    
+    private MovieTableModel purchaseMoviesTableModel = new MovieTableModel();
 }

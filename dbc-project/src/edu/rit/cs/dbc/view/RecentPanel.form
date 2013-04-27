@@ -33,7 +33,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="recentScrollPane" pref="389" max="32767" attributes="0"/>
+                  <Component id="recentScrollPane" pref="377" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -42,7 +42,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="recentScrollPane" pref="231" max="32767" attributes="0"/>
+                  <Component id="recentScrollPane" pref="217" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -87,7 +87,7 @@
                   <Component id="clearButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="rewatchButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="217" max="32767" attributes="0"/>
+                  <EmptySpace pref="238" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -99,7 +99,7 @@
                       <Component id="clearButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rewatchButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="23" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

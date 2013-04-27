@@ -115,5 +115,6 @@ public class RecentPanel extends javax.swing.JPanel {
     private javax.swing.JButton rewatchButton;
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
-    private MoviesTableModel recentMoviesTableModel = new MoviesTableModel();
+    
+    private MovieTableModel recentMoviesTableModel = new MovieTableModel();
 }
