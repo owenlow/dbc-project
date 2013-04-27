@@ -55,7 +55,7 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="browseMoviesTable">
               <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" preCode="MovieTableController movieTableController = new MovieTableController(browseMoviesTableModel);&#xa;movieTableController.loadBrowseMoviesTable();">
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="browseMoviesTableModel" type="code"/>
                 </Property>
                 <Property name="rowSorter" type="javax.swing.RowSorter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -161,6 +161,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Add to Queue"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addToQueueButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

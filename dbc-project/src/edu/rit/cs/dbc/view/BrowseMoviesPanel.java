@@ -5,7 +5,10 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
+import edu.rit.cs.dbc.model.Movie;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -24,6 +27,16 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         initComponents();
     }
     
+    public void registerController(MovieTableController movieTableController) {
+        this.movieTableController = movieTableController;
+        this.movieTableController.registerBrowseMoviesPanel(this);
+        this.movieTableController.loadBrowseMoviesTable();
+    }
+
+    public MovieTableModel getMovieTableModel() {
+        return browseMoviesTableModel;
+    }
+    
     /** 
      * Update the row filter regular expression from the expression in
      * the text box.
@@ -33,10 +46,10 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
                 !filterByComboBox.getSelectedItem().toString().equals("")) {
             String columnToFilter = filterByComboBox.getSelectedItem().toString();
             
-            RowFilter<MoviesTableModel, Object> rf;
+            RowFilter<MovieTableModel, Object> rf;
             //If current expression doesn't parse, don't update.
             try {
-                int columnIndex = Arrays.asList(MoviesTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
+                int columnIndex = Arrays.asList(MovieTableModel.MOVIE_COLUMN_NAMES).indexOf(columnToFilter);
                 rf = RowFilter.regexFilter(filterByTextField.getText(), columnIndex);
             } catch (java.util.regex.PatternSyntaxException e) {
                 return;
@@ -67,8 +80,6 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         setName("Browse Movies Screen"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
-        MovieTableController movieTableController = new MovieTableController(browseMoviesTableModel);
-        movieTableController.loadBrowseMoviesTable();
         browseMoviesTable.setModel(browseMoviesTableModel);
         browseMoviesTable.setRowSorter(sorter);
         browseMoviesTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -144,6 +155,11 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         add(upperPanel, java.awt.BorderLayout.CENTER);
 
         addToQueueButton.setText("Add to Queue");
+        addToQueueButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addToQueueButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
@@ -169,6 +185,23 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         filterMovieResults();
     }//GEN-LAST:event_filterByComboBoxActionPerformed
 
+    private void addToQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToQueueButtonActionPerformed
+        int selection[] = browseMoviesTable.getSelectedRows();
+        for (int selectionIndex = 0; selectionIndex < selection.length; selectionIndex++) {
+            selection[selectionIndex] = browseMoviesTable.convertRowIndexToModel(selection[selectionIndex]);
+        }
+        Collection<Movie> moviesSelected = new ArrayList<>();
+        for (int selectionIndex = 0; selectionIndex < selection.length; selectionIndex++) {
+            Movie m = browseMoviesTableModel.getMovieAt(selection[selectionIndex]);
+            if (m != null) {
+                moviesSelected.add(m);
+            }
+        }
+        if (!moviesSelected.isEmpty()) {
+            movieTableController.addMoviesToQueue(moviesSelected);
+        }
+    }//GEN-LAST:event_addToQueueButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToQueueButton;
     private javax.swing.JTable browseMoviesTable;
@@ -181,7 +214,8 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 
-    private MoviesTableModel browseMoviesTableModel = new MoviesTableModel();
-    private TableRowSorter<MoviesTableModel> sorter = new TableRowSorter<>(browseMoviesTableModel);
+    private MovieTableModel browseMoviesTableModel = new MovieTableModel();
+    private TableRowSorter<MovieTableModel> sorter = new TableRowSorter<>(browseMoviesTableModel);
+    private MovieTableController movieTableController;
 
 }

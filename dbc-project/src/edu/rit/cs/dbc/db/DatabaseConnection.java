@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -292,6 +294,29 @@ public class DatabaseConnection {
         }
         
         return queueMovies;
+    }
+    
+    public void addMoviesToQueue(Collection<Movie> moviesSelected) {
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    for (Movie movieToQueue : moviesSelected) {
+                        PreparedStatement statement = con.prepareStatement(
+                                "insert into queue"
+                                + " (member_id, movie_id)"
+                                + " values (?, ?)");
+                        statement.setInt(1, currentMember.getMemberId());
+                        statement.setInt(2, movieToQueue.getMovieId());
+                        int insertResult = statement.executeUpdate();
+                        statement.close();
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database access error when adding"
+                        + " movies to a member's queue");
+                ex.printStackTrace();
+            }
+        }
     }
     
     private String digestPassword(String password) {

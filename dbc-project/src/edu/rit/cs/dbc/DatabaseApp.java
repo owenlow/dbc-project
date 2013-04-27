@@ -9,8 +9,6 @@ import javax.swing.JFrame;
  * @author ptr5201
  */
 public class DatabaseApp {
-
-    static LoginScreen login;
     /**
      * @param args the command line arguments
      */
@@ -21,7 +19,7 @@ public class DatabaseApp {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                login = new LoginScreen();
+                LoginScreen login = new LoginScreen();
                 login.setVisible(true);
             }
         });
@@ -32,10 +30,6 @@ public class DatabaseApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-    
-    public static void displayLogin() {
-        login.setVisible(true);
     }
     
 }

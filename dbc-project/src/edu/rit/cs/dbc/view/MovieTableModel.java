@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author ptr5201
  */
-public class MoviesTableModel extends AbstractTableModel {
+public class MovieTableModel extends AbstractTableModel {
     
     public static final String[] MOVIE_COLUMN_NAMES = {
         "Title", "Year", "Genre", "Rating", "Score"
@@ -40,23 +40,40 @@ public class MoviesTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         ArrayList<Movie> list = new ArrayList<>(movieData);
         Movie currentMovie = list.get(rowIndex);
+        Object movieReturnValue = null;
         
-        if (columnIndex >= 0 && columnIndex < MOVIE_COLUMN_NAMES.length) {
+        if (columnIndex >= 0 && 
+                columnIndex < MOVIE_COLUMN_NAMES.length) {
             switch (getColumnName(columnIndex)) {
                 case "Title":
-                    return currentMovie.getTitle();
+                    movieReturnValue = currentMovie.getTitle();
+                    break;
                 case "Year":
-                    return currentMovie.getYear();
+                    movieReturnValue = currentMovie.getYear();
+                    break;
                 case "Genre":
-                    return currentMovie.getGenres();
+                    movieReturnValue = currentMovie.getGenres();
+                    break;
                 case "Rating":
-                    return currentMovie.getRating();
+                    movieReturnValue = currentMovie.getRating();
+                    break;
                 case "Score":
-                    return currentMovie.getScore();
+                    movieReturnValue = currentMovie.getScore();
+                    break;
             }
         }
         
-        return null;
+        return movieReturnValue;
+    }
+    
+    public Movie getMovieAt(int rowIndex) {
+        ArrayList<Movie> list = new ArrayList<>(movieData);
+        Movie movieAtRow = null;
+        if (rowIndex >= 0 && rowIndex < movieData.size()) {
+            movieAtRow = list.get(rowIndex);
+        }
+        
+        return movieAtRow;
     }
     
     @Override

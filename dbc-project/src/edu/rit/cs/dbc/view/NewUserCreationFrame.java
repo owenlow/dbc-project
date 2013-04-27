@@ -231,7 +231,7 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
                     if (DatabaseConnection.getInstance().createMember(
                         usernameTextField.getText(), fullNameTextField.getText(), new String(passwordTextField.getPassword()))) {
                         dispose();
-                        DatabaseApp.displayLogin();
+                        new LoginScreen().setVisible(true);
                     }
                 } else {
                     setErrorLabel(true, "Username exists");
@@ -247,7 +247,7 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         // Close
         dispose();
-        DatabaseApp.displayLogin();
+        new LoginScreen().setVisible(true);
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void setErrorLabel(boolean visible, String errorMessage) {

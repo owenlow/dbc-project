@@ -6,7 +6,6 @@ package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.DatabaseApp;
 import edu.rit.cs.dbc.db.DatabaseConnection;
-import java.util.Arrays;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -169,9 +168,8 @@ public class LoginScreen extends javax.swing.JFrame {
                     new String(passwordTextField.getPassword()))) {
                 setVisible(false);
                 dispose();
-                // TODO: replace with loading Main Frame
-                //DatabaseApp.createAndShowGUI();
-                new DatabaseMainFrame().setVisible(true);
+                DatabaseMainFrame mainFrame = new DatabaseMainFrame();
+                mainFrame.setVisible(true);
             } else {
                 DatabaseConnection.getInstance().close();
                 setInvalidLoginLabelVisible(true);
