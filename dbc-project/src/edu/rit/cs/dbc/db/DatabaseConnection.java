@@ -303,11 +303,26 @@ public class DatabaseConnection {
                 if (!con.isClosed()) {
                     for (Movie movieToQueue : moviesSelected) {
                         PreparedStatement statement = con.prepareStatement(
+                                "select rank from queue"
+                                + " where rank = ("
+                                    + "select max(rank) from queue "
+                                    + "where member_id = ?)"
+                                + " and member_id = ?");
+                        statement.setInt(1, currentMember.getMemberId());
+                        statement.setInt(2, currentMember.getMemberId());
+                        ResultSet result = statement.executeQuery();
+                        int newRank = 0;
+                        while (result.next()) {
+                            newRank = result.getInt("rank");
+                        }
+                        
+                        statement = con.prepareStatement(
                                 "insert into queue"
-                                + " (member_id, movie_id)"
-                                + " values (?, ?)");
+                                + " (member_id, movie_id, rank)"
+                                + " values (?, ?, ?)");
                         statement.setInt(1, currentMember.getMemberId());
                         statement.setInt(2, movieToQueue.getMovieId());
+                        statement.setInt(3, newRank + 1);
                         int insertResult = statement.executeUpdate();
                         statement.close();
                     }
