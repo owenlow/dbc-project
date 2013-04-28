@@ -9,6 +9,8 @@ import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 import edu.rit.cs.dbc.view.MemberQueuePanel;
+import edu.rit.cs.dbc.view.PurchasePanel;
+import edu.rit.cs.dbc.view.RecentPanel;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
@@ -21,6 +23,8 @@ public class MovieTableController {
     
     private BrowseMoviesPanel browseMoviesPanel;
     private MemberQueuePanel memberQueuePanel;
+    private RecentPanel recentPanel;
+    private PurchasePanel purchasePanel;
     
     public void registerBrowseMoviesPanel(BrowseMoviesPanel browseMoviesPanel) {
         this.browseMoviesPanel = browseMoviesPanel;
@@ -28,6 +32,14 @@ public class MovieTableController {
     
     public void registerMemberQueuePanel(MemberQueuePanel memberQueuePanel) {
         this.memberQueuePanel = memberQueuePanel;
+    }
+    
+    public void registerRecentPanel(RecentPanel recentPanel) {
+        this.recentPanel = recentPanel;
+    }
+    
+    public void registerPurchasedPanel(PurchasePanel purchasePanel) {
+        this.purchasePanel = purchasePanel;
     }
     
     public void loadBrowseMoviesTable() {
@@ -83,6 +95,60 @@ public class MovieTableController {
         };
         
         loadQueueMoviesWorker.execute();
+    }
+    
+    public void loadRecentMoviesTable() {
+        SwingWorker loadRecentMoviesWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                return DatabaseConnection.getInstance().getRecentMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    recentPanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Getting a member's recent movies was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Getting a member's recent movies threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        loadRecentMoviesWorker.execute();
+    }
+    
+    public void loadPurchasedMoviesTable() {
+        SwingWorker loadPurchasedMoviesWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                return DatabaseConnection.getInstance().getPurchasedMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    purchasePanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Getting a member's purchased movies was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Getting a member's purchased movies threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        loadPurchasedMoviesWorker.execute();
     }
     
     public void addMoviesToQueue(final Collection<Movie> moviesSelected) {

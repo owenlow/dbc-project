@@ -4,6 +4,7 @@
  */
 package edu.rit.cs.dbc.view;
 
+import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.MovieTableModel;
 
 /**
@@ -18,7 +19,16 @@ public class PurchasePanel extends javax.swing.JPanel {
     public PurchasePanel() {
         initComponents();
     }
+    public void registerController(MovieTableController movieTableController) {
+        this.movieTableController = movieTableController;
+        this.movieTableController.registerPurchasedPanel(this);
+        this.movieTableController.loadPurchasedMoviesTable();
+    }
 
+    public MovieTableModel getMovieTableModel() {
+        return purchaseMoviesTableModel;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,4 +111,5 @@ public class PurchasePanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     private MovieTableModel purchaseMoviesTableModel = new MovieTableModel();
+    private MovieTableController movieTableController;
 }

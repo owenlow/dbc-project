@@ -41,7 +41,11 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
         TabPane.setPreferredSize(new java.awt.Dimension(500, 600));
         TabPane.addTab("Browse", browseMoviesPanel);
         TabPane.addTab("Queue", memberQueuePanel);
+
+        recentPanel.registerController(movieTableController);
         TabPane.addTab("Recent", recentPanel);
+
+        purchasePanel.registerController(movieTableController);
         TabPane.addTab("Purchases", purchasePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

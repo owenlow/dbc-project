@@ -4,6 +4,7 @@
  */
 package edu.rit.cs.dbc.view;
 
+import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.MovieTableModel;
 
 /**
@@ -17,6 +18,16 @@ public class RecentPanel extends javax.swing.JPanel {
      */
     public RecentPanel() {
         initComponents();
+    }
+    
+    public void registerController(MovieTableController movieTableController) {
+        this.movieTableController = movieTableController;
+        this.movieTableController.registerRecentPanel(this);
+        this.movieTableController.loadRecentMoviesTable();
+    }
+
+    public MovieTableModel getMovieTableModel() {
+        return recentMoviesTableModel;
     }
 
     /**
@@ -119,4 +130,5 @@ public class RecentPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     private MovieTableModel recentMoviesTableModel = new MovieTableModel();
+    private MovieTableController movieTableController;
 }

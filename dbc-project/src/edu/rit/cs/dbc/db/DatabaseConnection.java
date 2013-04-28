@@ -297,6 +297,154 @@ public class DatabaseConnection {
         return queueMovies;
     }
     
+    public Collection<Movie> getRecentMovies() {
+        Collection<Movie> recentMovies = new ArrayList<Movie>();
+        
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    // get all the movies from the database, including each
+                    // movie's list of genres
+                    PreparedStatement statement = con.prepareStatement(
+                            "select * from movie"
+                            + " natural join genre"
+                            + " natural join recent where"
+                            + " member_id = ?"
+                            + " order by timestamp desc");
+                    statement.setInt(1, currentMember.getMemberId());
+                    ResultSet resultSet = statement.executeQuery();
+
+                    // add each movie record to the collection of movies to
+                    // be returned. a movie with multiple genres will show up
+                    // in multiple records, but with different genres
+                    while (resultSet.next()) {
+                        Integer movieId = resultSet.getInt("movie_id");
+                        String genre = resultSet.getString("genre");
+
+                        // check to see if the current movie matches with
+                        // an existing movie that was already added. if this
+                        // is the case, then a new genre needs to be added
+                        // to the list of genres
+                        boolean doesMovieExist = false;
+                        if (!recentMovies.isEmpty()) {
+                            Iterator<Movie> it = recentMovies.iterator();
+                            while (it.hasNext() && !doesMovieExist) {
+                                Movie existingMovie = it.next();
+                                if (movieId == existingMovie.getMovieId()) {
+                                    doesMovieExist = true;
+                                    existingMovie.getGenres().add(genre);
+                                }
+                            }
+                        }
+
+                        // if a movie hasn't been added to the collection yet,
+                        // then create an instance using the values from the
+                        // query
+                        if (!doesMovieExist) {
+                            String title = resultSet.getString("title");
+                            String rating = resultSet.getString("rating");
+                            String year = resultSet.getString("year");
+                            Float score = resultSet.getFloat("score");
+                            Collection<String> movieGenres = new ArrayList<>();
+                            movieGenres.add(genre);
+                            Movie movieResult = new Movie(
+                                    title, 
+                                    rating, 
+                                    movieGenres, 
+                                    Integer.parseInt(year), 
+                                    movieId, 
+                                    score);
+                            recentMovies.add(movieResult);
+                        }
+                    }
+
+                    statement.close();
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Database error when"
+                        + " retrieving movies in member's recent");
+                sqle.printStackTrace();
+            }
+        }
+        
+        return recentMovies;
+    }
+    
+    public Collection<Movie> getPurchasedMovies() {
+        
+        Collection<Movie> purchasedMovies = new ArrayList<Movie>();
+        
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    // get all the movies from the database, including each
+                    // movie's list of genres
+                    PreparedStatement statement = con.prepareStatement(
+                            "select * from movie"
+                            + " natural join genre"
+                            + " natural join purchase where"
+                            + " member_id = ?"
+                            + " order by timestamp desc");
+                    statement.setInt(1, currentMember.getMemberId());
+                    ResultSet resultSet = statement.executeQuery();
+
+                    // add each movie record to the collection of movies to
+                    // be returned. a movie with multiple genres will show up
+                    // in multiple records, but with different genres
+                    while (resultSet.next()) {
+                        Integer movieId = resultSet.getInt("movie_id");
+                        String genre = resultSet.getString("genre");
+
+                        // check to see if the current movie matches with
+                        // an existing movie that was already added. if this
+                        // is the case, then a new genre needs to be added
+                        // to the list of genres
+                        boolean doesMovieExist = false;
+                        if (!purchasedMovies.isEmpty()) {
+                            Iterator<Movie> it = purchasedMovies.iterator();
+                            while (it.hasNext() && !doesMovieExist) {
+                                Movie existingMovie = it.next();
+                                if (movieId == existingMovie.getMovieId()) {
+                                    doesMovieExist = true;
+                                    existingMovie.getGenres().add(genre);
+                                }
+                            }
+                        }
+
+                        // if a movie hasn't been added to the collection yet,
+                        // then create an instance using the values from the
+                        // query
+                        if (!doesMovieExist) {
+                            String title = resultSet.getString("title");
+                            String rating = resultSet.getString("rating");
+                            String year = resultSet.getString("year");
+                            Float score = resultSet.getFloat("score");
+                            Collection<String> movieGenres = new ArrayList<>();
+                            movieGenres.add(genre);
+                            Movie movieResult = new Movie(
+                                    title, 
+                                    rating, 
+                                    movieGenres, 
+                                    Integer.parseInt(year), 
+                                    movieId, 
+                                    score);
+                            purchasedMovies.add(movieResult);
+                        }
+                    }
+
+                    statement.close();
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Database error when"
+                        + " retrieving movies in member's recent");
+                sqle.printStackTrace();
+            }
+        }
+        
+        return purchasedMovies;
+        
+    }
+    
     public void addMoviesToQueue(Collection<Movie> moviesSelected) {
         if (currentMember != null) {
             try {
