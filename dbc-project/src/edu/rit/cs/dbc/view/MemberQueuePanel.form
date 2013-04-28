@@ -33,7 +33,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="moviesQueueScrollPane" pref="327" max="32767" attributes="0"/>
+                  <Component id="moviesQueueScrollPane" pref="335" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="rankButtonPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
                       <Component id="moveMovieUpButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="moveMovieDownButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="146" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -137,7 +137,7 @@
                   <Component id="removeFromQueueButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="purchaseButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="136" max="32767" attributes="0"/>
+                  <EmptySpace pref="139" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,7 +149,7 @@
                       <Component id="removeFromQueueButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="purchaseButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

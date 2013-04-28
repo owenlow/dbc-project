@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.ServerErrorMessage;
 
 /**
  *
@@ -475,6 +478,16 @@ public class DatabaseConnection {
                         statement.close();
                     }
                 }
+            } catch (PSQLException ex) {
+                ServerErrorMessage errorMessage = ex.getServerErrorMessage();
+                if (errorMessage.getMessage().equals(
+                        "duplicate key value violates unique constraint \"queue_pkey\"")) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Cannot have duplicate movies in a queue", 
+                            "Duplicate Movie", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } catch (SQLException ex) {
                 System.err.println("Database error when adding"
                         + " movies to a member's queue");
@@ -599,5 +612,43 @@ public class DatabaseConnection {
         }
         
         return movieResult;
+    }
+
+    public void removeMoviesFromQueue(Collection<Movie> moviesSelected) {
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    PreparedStatement statement = null;
+                    for (Movie m : moviesSelected) {
+                        statement = con.prepareStatement(
+                            "delete from queue where"
+                            + " member_id = ? and"
+                            + " movie_id = ?");
+                        statement.setInt(1, currentMember.getMemberId());
+                        statement.setInt(2, m.getMovieId());
+                        int deleteResult = statement.executeUpdate();
+                    }
+                    
+                    int newRank = 1;
+                    for (Movie m : getQueueMovies()) {
+                        statement = con.prepareStatement(
+                                "update queue set rank = ?"
+                                + " where member_id = ? and"
+                                + " movie_id = ?");
+                        statement.setInt(1, newRank);
+                        statement.setInt(2, currentMember.getMemberId());
+                        statement.setInt(3, m.getMovieId());
+                        int updateResult = statement.executeUpdate();
+                        newRank++;
+                    }
+                    
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database error trying to remove movies"
+                        + " from a member's movie queue");
+                ex.printStackTrace();
+            }
+        }
     }
 }

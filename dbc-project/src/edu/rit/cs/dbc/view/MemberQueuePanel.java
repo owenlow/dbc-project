@@ -7,6 +7,8 @@ package edu.rit.cs.dbc.view;
 import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
@@ -182,7 +184,20 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_moveMovieDownButtonActionPerformed
 
     private void removeFromQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFromQueueButtonActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = moviesQueueTable.getSelectedRows();
+        for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
+            selectedRows[rowIndex] = moviesQueueTable.convertRowIndexToModel(selectedRows[rowIndex]);
+        }
+        Collection<Movie> moviesSelected = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
+            Movie m = queueMoviesTableModel.getMovieAt(selectedRows[rowIndex]);
+            if (m != null) {
+                moviesSelected.add(m);
+            }
+        }
+        if (!moviesSelected.isEmpty()) {
+            movieTableController.removeMoviesFromQueue(moviesSelected);
+        }
     }//GEN-LAST:event_removeFromQueueButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

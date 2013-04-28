@@ -33,8 +33,8 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
         browseMoviesPanel.registerController(movieTableController);
         memberQueuePanel = new edu.rit.cs.dbc.view.MemberQueuePanel();
         memberQueuePanel.registerController(movieTableController);
-        recentPanel = new edu.rit.cs.dbc.view.RecentPanel();
         purchasePanel = new edu.rit.cs.dbc.view.PurchasePanel();
+        recentPanel = new edu.rit.cs.dbc.view.RecentPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,11 +42,11 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
         TabPane.addTab("Browse", browseMoviesPanel);
         TabPane.addTab("Queue", memberQueuePanel);
 
-        recentPanel.registerController(movieTableController);
-        TabPane.addTab("Recent", recentPanel);
-
         purchasePanel.registerController(movieTableController);
         TabPane.addTab("Purchases", purchasePanel);
+
+        recentPanel.registerController(movieTableController);
+        TabPane.addTab("Recent", recentPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

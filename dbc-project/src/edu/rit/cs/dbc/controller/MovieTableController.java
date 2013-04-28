@@ -186,6 +186,34 @@ public class MovieTableController {
     public void increaseMovieRank(Movie currentMovie) {
         swapMovieRank(currentMovie, 1);
     }
+
+    public void removeMoviesFromQueue(final Collection<Movie> moviesSelected) {
+        SwingWorker removeMoviesFromQueueWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                DatabaseConnection.getInstance().removeMoviesFromQueue(moviesSelected);
+                return DatabaseConnection.getInstance().getQueueMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    memberQueuePanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Removing movies from a member's queue was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Removing movies from a member's queue threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        removeMoviesFromQueueWorker.execute();
+    }
     
     private void swapMovieRank(final Movie currentMovie, final int otherMovieOffsetIndex) {
         MovieTableModel queueMovieTableModel = memberQueuePanel.getMovieTableModel();
@@ -209,10 +237,10 @@ public class MovieTableController {
                             currentMovieIndex + otherMovieOffsetIndex, 
                             currentMovieIndex + otherMovieOffsetIndex);
                 } catch (InterruptedException ex) {
-                    System.err.println("Adding movies to a member's queue was interrupted");
+                    System.err.println("Updating a movie's rank in the queue was interrupted");
                     ex.printStackTrace();
                 } catch (ExecutionException ex) {
-                    System.err.println("Getting a member's queue of movies threw an exception: " + ex.getMessage());
+                    System.err.println("Updating a movie's rank in the queue threw an exception: " + ex.getMessage());
                     ex.printStackTrace();
                 }
                 
