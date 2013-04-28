@@ -4,7 +4,9 @@
  */
 package edu.rit.cs.dbc.view;
 
+import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.controller.MovieTableController;
+import edu.rit.cs.dbc.model.Movie;
 
 /**
  *
@@ -29,6 +31,10 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         return queueMoviesTableModel;
     }
 
+    public void setRowSelectionInterval(int i, int i0) {
+        moviesQueueTable.setRowSelectionInterval(i, i0);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,8 +47,12 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         upperPanel = new javax.swing.JPanel();
         moviesQueueScrollPane = new javax.swing.JScrollPane();
         moviesQueueTable = new javax.swing.JTable();
+        rankButtonPanel = new javax.swing.JPanel();
+        moveMovieUpButton = new javax.swing.JButton();
+        moveMovieDownButton = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
         purchaseButton = new javax.swing.JButton();
+        removeFromQueueButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(495, 561));
         setLayout(new java.awt.BorderLayout());
@@ -51,20 +61,58 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         moviesQueueTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         moviesQueueScrollPane.setViewportView(moviesQueueTable);
 
+        moveMovieUpButton.setText("↑");
+        moveMovieUpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveMovieUpButtonActionPerformed(evt);
+            }
+        });
+
+        moveMovieDownButton.setText("↓");
+        moveMovieDownButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveMovieDownButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout rankButtonPanelLayout = new javax.swing.GroupLayout(rankButtonPanel);
+        rankButtonPanel.setLayout(rankButtonPanelLayout);
+        rankButtonPanelLayout.setHorizontalGroup(
+            rankButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rankButtonPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(rankButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(moveMovieDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(moveMovieUpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        rankButtonPanelLayout.setVerticalGroup(
+            rankButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rankButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(moveMovieUpButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(moveMovieDownButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rankButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                    .addComponent(rankButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -74,30 +122,78 @@ public class MemberQueuePanel extends javax.swing.JPanel {
 
         purchaseButton.setText("Purchase");
 
+        removeFromQueueButton.setText("Remove from Queue");
+        removeFromQueueButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeFromQueueButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(removeFromQueueButton)
+                .addGap(18, 18, 18)
                 .addComponent(purchaseButton)
-                .addContainerGap(294, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseButton)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(removeFromQueueButton)
+                    .addComponent(purchaseButton))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void moveMovieUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveMovieUpButtonActionPerformed
+        // only allow updating the rank of one movie at a time
+        if (moviesQueueTable.getSelectedRowCount() == 1) {
+            int selectedRow = moviesQueueTable.getSelectedRow();
+            if (selectedRow > -1) {
+                selectedRow = moviesQueueTable.convertRowIndexToModel(selectedRow);
+                if (selectedRow > 0) {
+                    Movie m = queueMoviesTableModel.getMovieAt(selectedRow);
+                    movieTableController.decreaseMovieRank(m);
+                }
+            }
+        }
+    }//GEN-LAST:event_moveMovieUpButtonActionPerformed
+
+    private void moveMovieDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveMovieDownButtonActionPerformed
+        // only allow updating the rank of one movie at a time
+        if (moviesQueueTable.getSelectedRowCount() == 1) {
+            int selectedRow = moviesQueueTable.getSelectedRow();
+            if (selectedRow > -1) {
+                selectedRow = moviesQueueTable.convertRowIndexToModel(selectedRow);
+                if (selectedRow < (queueMoviesTableModel.getRowCount() - 1)) {
+                    Movie m = queueMoviesTableModel.getMovieAt(selectedRow);
+                    movieTableController.increaseMovieRank(m);
+                }
+            }
+        }
+    }//GEN-LAST:event_moveMovieDownButtonActionPerformed
+
+    private void removeFromQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFromQueueButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeFromQueueButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton moveMovieDownButton;
+    private javax.swing.JButton moveMovieUpButton;
     private javax.swing.JScrollPane moviesQueueScrollPane;
     private javax.swing.JTable moviesQueueTable;
     private javax.swing.JButton purchaseButton;
+    private javax.swing.JPanel rankButtonPanel;
+    private javax.swing.JButton removeFromQueueButton;
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 

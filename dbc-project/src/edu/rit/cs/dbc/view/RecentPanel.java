@@ -4,6 +4,8 @@
  */
 package edu.rit.cs.dbc.view;
 
+import edu.rit.cs.dbc.model.MovieTableModel;
+
 /**
  *
  * @author owen

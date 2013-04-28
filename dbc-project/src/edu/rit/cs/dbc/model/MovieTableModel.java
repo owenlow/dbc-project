@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.rit.cs.dbc.view;
+package edu.rit.cs.dbc.model;
 
-import edu.rit.cs.dbc.model.Movie;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.table.AbstractTableModel;
@@ -74,6 +73,11 @@ public class MovieTableModel extends AbstractTableModel {
         }
         
         return movieAtRow;
+    }
+    
+    public int getIndexOfMovie(Movie m) {
+        ArrayList<Movie> list = new ArrayList<>(movieData);
+        return list.indexOf(m);
     }
     
     @Override

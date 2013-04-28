@@ -217,7 +217,7 @@ public class DatabaseConnection {
                 statement.close();
             }
         } catch (SQLException sqle) {
-            System.err.println("Database access error when retrieving all movies");
+            System.err.println("Database error when retrieving all movies");
             sqle.printStackTrace();
         }
         
@@ -236,7 +236,8 @@ public class DatabaseConnection {
                             "select * from movie"
                             + " natural join genre"
                             + " natural join queue where"
-                            + " member_id = ?");
+                            + " member_id = ?"
+                            + " order by rank asc");
                     statement.setInt(1, currentMember.getMemberId());
                     ResultSet resultSet = statement.executeQuery();
 
@@ -287,7 +288,7 @@ public class DatabaseConnection {
                     statement.close();
                 }
             } catch (SQLException sqle) {
-                System.err.println("Database access error when"
+                System.err.println("Database error when"
                         + " retrieving movies in member's queue");
                 sqle.printStackTrace();
             }
@@ -312,8 +313,36 @@ public class DatabaseConnection {
                     }
                 }
             } catch (SQLException ex) {
-                System.err.println("Database access error when adding"
+                System.err.println("Database error when adding"
                         + " movies to a member's queue");
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void swapMovieRank(Movie currentMovie, Movie otherMovie) {
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    PreparedStatement statement = con.prepareStatement(
+                            "update queue set rank = queue_temp.rank"
+                            + " from queue as queue_temp where"
+                            + " (queue.movie_id = ? or queue_temp.movie_id = ?)"
+                            + " and (queue.movie_id = ? or queue_temp.movie_id = ?)"
+                            + " and ((queue.movie_id <> queue_temp.movie_id)"
+                            + " and (queue.member_id = ? and queue_temp.member_id = ?))");
+                    statement.setInt(1, currentMovie.getMovieId());
+                    statement.setInt(2, currentMovie.getMovieId());
+                    statement.setInt(3, otherMovie.getMovieId());
+                    statement.setInt(4, otherMovie.getMovieId());
+                    statement.setInt(5, currentMember.getMemberId());
+                    statement.setInt(6, currentMember.getMemberId());
+                    int insertResult = statement.executeUpdate();
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database error when swapping ranks"
+                        + "of two movies within a member's queue");
                 ex.printStackTrace();
             }
         }

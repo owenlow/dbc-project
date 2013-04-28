@@ -4,6 +4,7 @@
  */
 package edu.rit.cs.dbc.view;
 
+import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
 import java.util.ArrayList;
