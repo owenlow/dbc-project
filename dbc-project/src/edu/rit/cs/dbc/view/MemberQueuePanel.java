@@ -94,7 +94,7 @@ public class MemberQueuePanel extends javax.swing.JPanel {
                 .addComponent(moveMovieUpButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(moveMovieDownButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
@@ -103,7 +103,7 @@ public class MemberQueuePanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addComponent(moviesQueueScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rankButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -123,6 +123,11 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         buttonPanel.setPreferredSize(new java.awt.Dimension(400, 58));
 
         purchaseButton.setText("Purchase");
+        purchaseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                purchaseButtonActionPerformed(evt);
+            }
+        });
 
         removeFromQueueButton.setText("Remove from Queue");
         removeFromQueueButton.addActionListener(new java.awt.event.ActionListener() {
@@ -140,7 +145,7 @@ public class MemberQueuePanel extends javax.swing.JPanel {
                 .addComponent(removeFromQueueButton)
                 .addGap(18, 18, 18)
                 .addComponent(purchaseButton)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +154,7 @@ public class MemberQueuePanel extends javax.swing.JPanel {
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(removeFromQueueButton)
                     .addComponent(purchaseButton))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
@@ -199,6 +204,11 @@ public class MemberQueuePanel extends javax.swing.JPanel {
             movieTableController.removeMoviesFromQueue(moviesSelected);
         }
     }//GEN-LAST:event_removeFromQueueButtonActionPerformed
+
+    private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
+        int selected = moviesQueueTable.getSelectedRow();
+        //addMoviesToPurchased(queueMoviesTableModel.getMovieAt(WIDTH))
+    }//GEN-LAST:event_purchaseButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;

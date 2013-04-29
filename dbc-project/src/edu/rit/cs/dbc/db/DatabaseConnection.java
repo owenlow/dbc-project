@@ -495,6 +495,82 @@ public class DatabaseConnection {
             }
         }
     }
+    
+    public void addMoviesToPurchased(Movie movie) {
+        // Add this movie to purchased, remove from queue
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    
+                    PreparedStatement statement = con.prepareStatement(
+                            "insert into purchase (member_id, movie_id, price)"
+                            + " values "
+                            + " ( ?, ?, 4.99");
+                    statement.setInt(1, currentMember.getMemberId());
+                    statement.setInt(2, movie.getMovieId());
+                    statement.execute();
+                    
+                    // Remove from queue
+                    statement = con.prepareStatement(
+                            "delete from queue where member_id=?, movie_id=?"
+                    );
+                    statement.setInt(1, currentMember.getMemberId());
+                    statement.setInt(2, movie.getMovieId());
+                    statement.execute();
+                    
+                    statement.close();
+                    
+                }
+            } catch (PSQLException ex) {
+                ServerErrorMessage errorMessage = ex.getServerErrorMessage();
+                if (errorMessage.getMessage().equals(
+                        "duplicate key value violates unique constraint \"queue_pkey\"")) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Cannot have duplicate movies in a queue", 
+                            "Duplicate Movie", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database error when adding"
+                        + " movies to a member's purchased");
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void watchMovie(Movie movie) {
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    // Upsert
+                    PreparedStatement statement = con.prepareStatement(
+                            "update recent set "
+                            + "watchcount = watchcount + 1 "
+                            + "where member_id=?, movie_id=?"
+                    );
+                    statement.setInt(1, currentMember.getMemberId());
+                    statement.setInt(2, movie.getMovieId());
+                    
+                    statement.execute();
+                    
+                    /*
+                    statement = con.prepareStatement(
+                            "insert into recent (member_id, movie_id, watchcount)"
+                            + "select "
+                    );
+                    statement.setInt(1, movie.getMovieId());
+                    statement.setInt(2, currentMember.getMemberId());
+                    statement.execute();
+                    */
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database error when adjusting"
+                        + " movies in a member's recent");
+                ex.printStackTrace();
+            }
+        }
+    }
 
     public void swapMovieRank(Movie currentMovie, Movie otherMovie) {
         if (currentMember != null) {
