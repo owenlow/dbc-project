@@ -9,6 +9,7 @@ import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -206,8 +207,36 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_removeFromQueueButtonActionPerformed
 
     private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
-        int selected = moviesQueueTable.getSelectedRow();
-        //addMoviesToPurchased(queueMoviesTableModel.getMovieAt(WIDTH))
+        
+        
+        
+        int selection = moviesQueueTable.getSelectedRow();
+        
+        selection = moviesQueueTable.convertRowIndexToModel(selection);
+        
+        Movie m = queueMoviesTableModel.getMovieAt(selection);
+        
+        Object[] options = {"Yes", "No"};
+        int n = JOptionPane.showOptionDialog(this,
+            "Are you sure you want to purchase the movie \"" 
+                + m.getTitle() 
+                + "\"?\nThe cost will be "
+                + "$4.99.",
+                "Confirm purchase",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[1]
+        );
+        if ( n == 0 ) {
+            movieTableController.addMovieToPurchased(m);
+
+            Collection<Movie> temp = new ArrayList<Movie>();
+            temp.add(m);
+
+            movieTableController.removeMoviesFromQueue(temp);
+        }
     }//GEN-LAST:event_purchaseButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

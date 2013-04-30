@@ -496,27 +496,28 @@ public class DatabaseConnection {
         }
     }
     
-    public void addMoviesToPurchased(Movie movie) {
+    public void addMovieToPurchased(Movie movie) {
         // Add this movie to purchased, remove from queue
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
-                    
+                    System.out.println("purchasing movie");
                     PreparedStatement statement = con.prepareStatement(
                             "insert into purchase (member_id, movie_id, price)"
                             + " values "
-                            + " ( ?, ?, 4.99");
+                            + " ( ?, ?, 4.99 )"
+                    );
                     statement.setInt(1, currentMember.getMemberId());
                     statement.setInt(2, movie.getMovieId());
                     statement.execute();
                     
                     // Remove from queue
-                    statement = con.prepareStatement(
-                            "delete from queue where member_id=?, movie_id=?"
-                    );
-                    statement.setInt(1, currentMember.getMemberId());
-                    statement.setInt(2, movie.getMovieId());
-                    statement.execute();
+//                    statement = con.prepareStatement(
+//                            "delete from queue where member_id=? and movie_id=?"
+//                    );
+//                    statement.setInt(1, currentMember.getMemberId());
+//                    statement.setInt(2, movie.getMovieId());
+//                    statement.execute();
                     
                     statement.close();
                     

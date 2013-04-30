@@ -178,6 +178,34 @@ public class MovieTableController {
         
         addMoviesToQueueWorker.execute();
     }
+    
+    public void addMovieToPurchased(final Movie movie) {
+        SwingWorker addMovieToPurchasedWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                DatabaseConnection.getInstance().addMovieToPurchased(movie);
+                return DatabaseConnection.getInstance().getPurchasedMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    purchasePanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Adding movies to a member's purchased was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Getting a member's purchased movies threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        addMovieToPurchasedWorker.execute();
+    }
 
     public void decreaseMovieRank(Movie currentMovie) {
         swapMovieRank(currentMovie, -1);
