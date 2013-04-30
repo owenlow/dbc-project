@@ -5,6 +5,7 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
+import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
 
 /**
@@ -99,7 +100,12 @@ public class PurchasePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void watchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_watchButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = purchaseTable.getSelectedRow();
+        if (selectedRow > -1) {
+            selectedRow = purchaseTable.convertRowIndexToModel(selectedRow);
+            Movie m = purchaseMoviesTableModel.getMovieAt(selectedRow);
+            movieTableController.watchMovie(m);
+        }
     }//GEN-LAST:event_watchButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
