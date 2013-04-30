@@ -186,34 +186,6 @@ public class MovieTableController {
     public void increaseMovieRank(Movie currentMovie) {
         swapMovieRank(currentMovie, 1);
     }
-
-    public void removeMoviesFromQueue(final Collection<Movie> moviesSelected) {
-        SwingWorker removeMoviesFromQueueWorker = new SwingWorker<Collection<Movie>, Movie>() {
-
-            @Override
-            protected Collection<Movie> doInBackground() throws Exception {
-                DatabaseConnection.getInstance().removeMoviesFromQueue(moviesSelected);
-                return DatabaseConnection.getInstance().getQueueMovies();
-            }
-            
-            @Override
-            protected void done() {
-                try {
-                    Collection<Movie> result = get();
-                    memberQueuePanel.getMovieTableModel().setMovieData(result);
-                } catch (InterruptedException ex) {
-                    System.err.println("Removing movies from a member's queue was interrupted");
-                    ex.printStackTrace();
-                } catch (ExecutionException ex) {
-                    System.err.println("Removing movies from a member's queue threw an exception: " + ex.getMessage());
-                    ex.printStackTrace();
-                }
-                
-            }
-        };
-        
-        removeMoviesFromQueueWorker.execute();
-    }
     
     private void swapMovieRank(final Movie currentMovie, final int otherMovieOffsetIndex) {
         MovieTableModel queueMovieTableModel = memberQueuePanel.getMovieTableModel();
@@ -248,5 +220,61 @@ public class MovieTableController {
         };
         
         swapMovieRankWorker.execute();
+    }
+
+    public void removeMoviesFromQueue(final Collection<Movie> moviesSelected) {
+        SwingWorker removeMoviesFromQueueWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                DatabaseConnection.getInstance().removeMoviesFromQueue(moviesSelected);
+                return DatabaseConnection.getInstance().getQueueMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    memberQueuePanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Removing movies from a member's queue was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Removing movies from a member's queue threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        removeMoviesFromQueueWorker.execute();
+    }
+
+    public void watchMovie(final Movie movieToWatch) {
+        SwingWorker watchMovieWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                DatabaseConnection.getInstance().watchMovie(movieToWatch);
+                return DatabaseConnection.getInstance().getRecentMovies();
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    recentPanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Watching a purchased movie was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Watching a purchased movie threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+            }
+        };
+        
+        watchMovieWorker.execute();
     }
 }

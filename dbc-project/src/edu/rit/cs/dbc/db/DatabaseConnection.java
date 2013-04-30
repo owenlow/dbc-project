@@ -504,30 +504,28 @@ public class DatabaseConnection {
                     
                     PreparedStatement statement = con.prepareStatement(
                             "insert into purchase (member_id, movie_id, price)"
-                            + " values "
-                            + " ( ?, ?, 4.99");
+                            + " values (?, ?, 4.99)");
                     statement.setInt(1, currentMember.getMemberId());
                     statement.setInt(2, movie.getMovieId());
                     statement.execute();
                     
                     // Remove from queue
                     statement = con.prepareStatement(
-                            "delete from queue where member_id=?, movie_id=?"
+                            "delete from queue where member_id=? and movie_id=?"
                     );
                     statement.setInt(1, currentMember.getMemberId());
                     statement.setInt(2, movie.getMovieId());
                     statement.execute();
                     
                     statement.close();
-                    
                 }
             } catch (PSQLException ex) {
                 ServerErrorMessage errorMessage = ex.getServerErrorMessage();
                 if (errorMessage.getMessage().equals(
-                        "duplicate key value violates unique constraint \"queue_pkey\"")) {
+                        "duplicate key value violates unique constraint \"purchase_pkey\"")) {
                     JOptionPane.showMessageDialog(
                             null, 
-                            "Cannot have duplicate movies in a queue", 
+                            "Cannot purchase an existing movie", 
                             "Duplicate Movie", 
                             JOptionPane.ERROR_MESSAGE);
                 }
@@ -543,26 +541,27 @@ public class DatabaseConnection {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
-                    // Upsert
+                    // Update
                     PreparedStatement statement = con.prepareStatement(
-                            "update recent set "
-                            + "watchcount = watchcount + 1 "
-                            + "where member_id=?, movie_id=?"
+                            "update recent set"
+                            + " watchcount = watchcount + 1"
+                            + " where member_id=? and movie_id=?"
                     );
                     statement.setInt(1, currentMember.getMemberId());
                     statement.setInt(2, movie.getMovieId());
+                    int updateResult = statement.executeUpdate();
                     
-                    statement.execute();
+                    if (updateResult == 0) {
+                        statement = con.prepareStatement(
+                                "insert into recent (member_id, movie_id, watchcount)"
+                                + " values (?, ?, 1)"
+                        );
+                        statement.setInt(1, currentMember.getMemberId());
+                        statement.setInt(2, movie.getMovieId());
+                        int insertResult = statement.executeUpdate();
+                    }
                     
-                    /*
-                    statement = con.prepareStatement(
-                            "insert into recent (member_id, movie_id, watchcount)"
-                            + "select "
-                    );
-                    statement.setInt(1, movie.getMovieId());
-                    statement.setInt(2, currentMember.getMemberId());
-                    statement.execute();
-                    */
+                    statement.close();
                 }
             } catch (SQLException ex) {
                 System.err.println("Database error when adjusting"
