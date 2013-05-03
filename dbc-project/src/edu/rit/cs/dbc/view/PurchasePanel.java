@@ -9,6 +9,7 @@ import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.model.Purchase;
 import edu.rit.cs.dbc.model.PurchaseMovieTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,6 +44,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         buttonPanel = new javax.swing.JPanel();
         watchButton = new javax.swing.JButton();
+        statButton = new javax.swing.JButton();
         upperPanel = new javax.swing.JPanel();
         purchaseScrollPane = new javax.swing.JScrollPane();
         purchaseTable = new javax.swing.JTable();
@@ -58,6 +60,13 @@ public class PurchasePanel extends javax.swing.JPanel {
             }
         });
 
+        statButton.setText("My Statistics");
+        statButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
@@ -65,14 +74,20 @@ public class PurchasePanel extends javax.swing.JPanel {
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addContainerGap(316, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
+                .addComponent(statButton)
+                .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statButton)
+                .addContainerGap())
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
@@ -87,14 +102,14 @@ public class PurchasePanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -110,10 +125,16 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_watchButtonActionPerformed
 
+    private void statButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statButtonActionPerformed
+        
+        JOptionPane.showMessageDialog(this, "Dialog", "User Statistics", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_statButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JScrollPane purchaseScrollPane;
     private javax.swing.JTable purchaseTable;
+    private javax.swing.JButton statButton;
     private javax.swing.JPanel upperPanel;
     private javax.swing.JButton watchButton;
     // End of variables declaration//GEN-END:variables

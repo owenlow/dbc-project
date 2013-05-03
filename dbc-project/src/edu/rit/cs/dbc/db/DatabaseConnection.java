@@ -756,12 +756,13 @@ public class DatabaseConnection {
             if (!con.isClosed()) {
                 PreparedStatement statement;
                 
+                // Sum
                 statement = con.prepareStatement("select sum(price) "
                         + "from purchase where member_id=?");
                 statement.setInt(1, currentMember.getMemberId());
                 
                 ResultSet r = statement.executeQuery();
-                r.getString(0);
+                System.out.println( r.getString(0) );
                 
                 statement.close();
             }

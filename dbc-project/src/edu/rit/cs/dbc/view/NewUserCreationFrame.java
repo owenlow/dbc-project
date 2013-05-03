@@ -78,7 +78,7 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
                             .add(verifyPasswordLabel))
                         .add(18, 18, 18)
                         .add(userFormPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(passwordTextField)
+                            .add(passwordTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                             .add(verifyPasswordTextField))))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -186,9 +186,8 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
                     .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(errorAndButtonPanelLayout.createSequentialGroup()
                         .add(closeButton)
-                        .add(18, 18, 18)
-                        .add(createAccountButton)
-                        .add(0, 50, Short.MAX_VALUE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 68, Short.MAX_VALUE)
+                        .add(createAccountButton)))
                 .addContainerGap())
         );
         errorAndButtonPanelLayout.setVerticalGroup(
@@ -218,6 +217,7 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
