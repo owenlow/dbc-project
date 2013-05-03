@@ -7,6 +7,8 @@ package edu.rit.cs.dbc.view;
 import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
+import edu.rit.cs.dbc.model.Purchase;
+import edu.rit.cs.dbc.model.PurchaseMovieTableModel;
 
 /**
  *
@@ -26,8 +28,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         this.movieTableController.loadPurchasedMoviesTable();
     }
 
-    public MovieTableModel getMovieTableModel() {
-        return purchaseMoviesTableModel;
+    public PurchaseMovieTableModel getPurchaseMovieTableModel() {
+        return purchaseMovieTableModel;
     }
     
     /**
@@ -63,19 +65,19 @@ public class PurchasePanel extends javax.swing.JPanel {
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
 
-        purchaseTable.setModel(purchaseMoviesTableModel);
+        purchaseTable.setModel(purchaseMovieTableModel);
         purchaseTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         purchaseScrollPane.setViewportView(purchaseTable);
 
@@ -85,14 +87,14 @@ public class PurchasePanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -103,8 +105,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         int selectedRow = purchaseTable.getSelectedRow();
         if (selectedRow > -1) {
             selectedRow = purchaseTable.convertRowIndexToModel(selectedRow);
-            Movie m = purchaseMoviesTableModel.getMovieAt(selectedRow);
-            movieTableController.watchMovie(m);
+            Purchase p = purchaseMovieTableModel.getPurchaseAt(selectedRow);
+            movieTableController.watchMovie(p.getMovie());
         }
     }//GEN-LAST:event_watchButtonActionPerformed
 
@@ -116,6 +118,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JButton watchButton;
     // End of variables declaration//GEN-END:variables
     
-    private MovieTableModel purchaseMoviesTableModel = new MovieTableModel();
+    private PurchaseMovieTableModel purchaseMovieTableModel = new PurchaseMovieTableModel();
     private MovieTableController movieTableController;
 }

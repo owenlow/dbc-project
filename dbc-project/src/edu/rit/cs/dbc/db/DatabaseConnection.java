@@ -6,6 +6,7 @@ package edu.rit.cs.dbc.db;
 
 import edu.rit.cs.dbc.model.Member;
 import edu.rit.cs.dbc.model.Movie;
+import edu.rit.cs.dbc.model.Purchase;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,12 +15,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.ServerErrorMessage;
@@ -373,9 +373,10 @@ public class DatabaseConnection {
         return recentMovies;
     }
     
-    public Collection<Movie> getPurchasedMovies() {
+    public Collection<Purchase> getPurchasedMovies() {
         
-        Collection<Movie> purchasedMovies = new ArrayList<Movie>();
+        Collection<Movie> memberMovies = new ArrayList<>();
+        Collection<Purchase> purchasedMovies = new ArrayList<>();
         
         if (currentMember != null) {
             try {
@@ -404,7 +405,7 @@ public class DatabaseConnection {
                         // to the list of genres
                         boolean doesMovieExist = false;
                         if (!purchasedMovies.isEmpty()) {
-                            Iterator<Movie> it = purchasedMovies.iterator();
+                            Iterator<Movie> it = memberMovies.iterator();
                             while (it.hasNext() && !doesMovieExist) {
                                 Movie existingMovie = it.next();
                                 if (movieId == existingMovie.getMovieId()) {
@@ -430,8 +431,38 @@ public class DatabaseConnection {
                                     movieGenres, 
                                     Integer.parseInt(year), 
                                     movieId, 
-                                    score);
-                            purchasedMovies.add(movieResult);
+                                    score
+                                    );
+                            memberMovies.add(movieResult);
+                        }
+                    }
+                    
+                    if (!memberMovies.isEmpty()) {
+                        statement = con.prepareStatement(
+                                "select * from purchase"
+                                + " where member_id = ?"
+                                + " order by timestamp desc"
+                                );
+                        statement.setInt(1, currentMember.getMemberId());
+                        resultSet = statement.executeQuery();
+                        while (resultSet.next()) {
+                            Integer movieId = resultSet.getInt("movie_id");
+                            Double price = resultSet.getDouble("price");
+                            Timestamp timestamp = resultSet.getTimestamp("timestamp");
+                            Movie movieResult = null;
+                            for (Movie m : memberMovies) {
+                                if (movieId.equals(m.getMovieId())) {
+                                    movieResult = m;
+                                    break;
+                                }
+                            }
+                            Purchase purchaseResult = new Purchase(
+                                    price.doubleValue(),
+                                    timestamp,
+                                    movieResult,
+                                    currentMember
+                                    );
+                            purchasedMovies.add(purchaseResult);
                         }
                     }
 
@@ -501,7 +532,6 @@ public class DatabaseConnection {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
-                    System.out.println("purchasing movie");
                     PreparedStatement statement = con.prepareStatement(
                             "insert into purchase (member_id, movie_id, price)"
                             + " values (?, ?, 4.99)");
@@ -733,7 +763,6 @@ public class DatabaseConnection {
                 ResultSet r = statement.executeQuery();
                 r.getString(0);
                 
-
                 statement.close();
             }
         } catch (SQLException ex) {

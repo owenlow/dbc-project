@@ -7,6 +7,7 @@ package edu.rit.cs.dbc.controller;
 import edu.rit.cs.dbc.db.DatabaseConnection;
 import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
+import edu.rit.cs.dbc.model.Purchase;
 import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 import edu.rit.cs.dbc.view.MemberQueuePanel;
 import edu.rit.cs.dbc.view.PurchasePanel;
@@ -125,18 +126,18 @@ public class MovieTableController {
     }
     
     public void loadPurchasedMoviesTable() {
-        SwingWorker loadPurchasedMoviesWorker = new SwingWorker<Collection<Movie>, Movie>() {
+        SwingWorker loadPurchasedMoviesWorker = new SwingWorker<Collection<Purchase>, Movie>() {
 
             @Override
-            protected Collection<Movie> doInBackground() throws Exception {
+            protected Collection<Purchase> doInBackground() throws Exception {
                 return DatabaseConnection.getInstance().getPurchasedMovies();
             }
             
             @Override
             protected void done() {
                 try {
-                    Collection<Movie> result = get();
-                    purchasePanel.getMovieTableModel().setMovieData(result);
+                    Collection<Purchase> result = get();
+                    purchasePanel.getPurchaseMovieTableModel().setPurchasedMovieData(result);
                 } catch (InterruptedException ex) {
                     System.err.println("Getting a member's purchased movies was interrupted");
                     ex.printStackTrace();
@@ -180,10 +181,10 @@ public class MovieTableController {
     }
     
     public void addMovieToPurchased(final Movie movie) {
-        SwingWorker addMovieToPurchasedWorker = new SwingWorker<Collection<Movie>, Movie>() {
+        SwingWorker addMovieToPurchasedWorker = new SwingWorker<Collection<Purchase>, Movie>() {
 
             @Override
-            protected Collection<Movie> doInBackground() throws Exception {
+            protected Collection<Purchase> doInBackground() throws Exception {
                 DatabaseConnection.getInstance().addMovieToPurchased(movie);
                 return DatabaseConnection.getInstance().getPurchasedMovies();
             }
@@ -191,8 +192,8 @@ public class MovieTableController {
             @Override
             protected void done() {
                 try {
-                    Collection<Movie> result = get();
-                    purchasePanel.getMovieTableModel().setMovieData(result);
+                    Collection<Purchase> result = get();
+                    purchasePanel.getPurchaseMovieTableModel().setPurchasedMovieData(result);
                 } catch (InterruptedException ex) {
                     System.err.println("Adding movies to a member's purchased was interrupted");
                     ex.printStackTrace();
