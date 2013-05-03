@@ -25,11 +25,4 @@ public class DatabaseApp {
         });
     }
     
-    public static void createAndShowNewUserFrame() {
-        NewUserCreationFrame frame = new NewUserCreationFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-    
 }

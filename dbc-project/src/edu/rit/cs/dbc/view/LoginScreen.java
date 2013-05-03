@@ -6,6 +6,7 @@ package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.DatabaseApp;
 import edu.rit.cs.dbc.db.DatabaseConnection;
+import javax.swing.JFrame;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -179,10 +180,15 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_loginActionPerformed
 
     private void newAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAccountButtonActionPerformed
-        // Open newuser frame
+        // close existing frame
         setVisible(false);
         dispose();
-        DatabaseApp.createAndShowNewUserFrame();
+        
+        // Open newuser frame
+        NewUserCreationFrame frame = new NewUserCreationFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }//GEN-LAST:event_newAccountButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
