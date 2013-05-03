@@ -5,7 +5,10 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
+import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
@@ -113,11 +116,29 @@ public class RecentPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = recentTable.getSelectedRows();
+        for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
+            selectedRows[rowIndex] = recentTable.convertRowIndexToModel(selectedRows[rowIndex]);
+        }
+        Collection<Movie> moviesSelected = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
+            Movie m = recentMoviesTableModel.getMovieAt(selectedRows[rowIndex]);
+            if (m != null) {
+                moviesSelected.add(m);
+            }
+        }
+        if (!moviesSelected.isEmpty()) {
+            movieTableController.removeMoviesFromRecent(moviesSelected);
+        }
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void rewatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rewatchButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = recentTable.getSelectedRow();
+        if (selectedRow > -1) {
+            selectedRow = recentTable.convertRowIndexToModel(selectedRow);
+            Movie m = recentMoviesTableModel.getMovieAt(selectedRow);
+            movieTableController.watchMovie(m);
+        }
     }//GEN-LAST:event_rewatchButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

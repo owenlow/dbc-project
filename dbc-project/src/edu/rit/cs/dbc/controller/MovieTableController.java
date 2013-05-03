@@ -305,4 +305,32 @@ public class MovieTableController {
         
         watchMovieWorker.execute();
     }
+    
+    public void removeMoviesFromRecent(final Collection<Movie> moviesSelected) {
+        SwingWorker removeMoviesFromRecentWorker = new SwingWorker<Collection<Movie>, Movie>() {
+
+            @Override
+            protected Collection<Movie> doInBackground() throws Exception {
+                DatabaseConnection.getInstance().removeMoviesFromRecent(moviesSelected);
+                return DatabaseConnection.getInstance().getRecentMovies();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    Collection<Movie> result = get();
+                    recentPanel.getMovieTableModel().setMovieData(result);
+                } catch (InterruptedException ex) {
+                    System.err.println("Removing movies from a member's recent was interrupted");
+                    ex.printStackTrace();
+                } catch (ExecutionException ex) {
+                    System.err.println("Removing movies from a member's recent threw an exception: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+
+            }
+        };
+
+        removeMoviesFromRecentWorker.execute();
+    }
 }

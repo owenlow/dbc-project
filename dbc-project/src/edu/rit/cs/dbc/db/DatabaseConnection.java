@@ -718,4 +718,54 @@ public class DatabaseConnection {
             }
         }
     }
+    
+    public String getStatistics() {
+        String result = null;
+        
+        try {
+            if (!con.isClosed()) {
+                PreparedStatement statement;
+                
+                statement = con.prepareStatement("select sum(price) "
+                        + "from purchase where member_id=?");
+                statement.setInt(1, currentMember.getMemberId());
+                
+                ResultSet r = statement.executeQuery();
+                r.getString(0);
+                
+
+                statement.close();
+            }
+        } catch (SQLException ex) {
+            System.err.println("Database error trying to get statistics"
+                    + " from a member's purchase table");
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    public void removeMoviesFromRecent(Collection<Movie> moviesSelected) {
+        if (currentMember != null) {
+            try {
+                if (!con.isClosed()) {
+                    PreparedStatement statement = null;
+                    for (Movie m : moviesSelected) {
+                        statement = con.prepareStatement(
+                            "delete from recent where"
+                            + " member_id = ? and"
+                            + " movie_id = ?");
+                        statement.setInt(1, currentMember.getMemberId());
+                        statement.setInt(2, m.getMovieId());
+                        int deleteResult = statement.executeUpdate();
+                    }
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                System.err.println("Database error trying to remove movies"
+                        + " from a member's recent movies");
+                ex.printStackTrace();
+            }
+        }
+    }
 }
