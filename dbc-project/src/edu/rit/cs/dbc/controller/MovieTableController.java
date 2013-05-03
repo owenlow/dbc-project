@@ -8,6 +8,7 @@ import edu.rit.cs.dbc.db.DatabaseConnection;
 import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.model.Purchase;
+import edu.rit.cs.dbc.model.Recent;
 import edu.rit.cs.dbc.view.BrowseMoviesPanel;
 import edu.rit.cs.dbc.view.MemberQueuePanel;
 import edu.rit.cs.dbc.view.PurchasePanel;
@@ -99,18 +100,18 @@ public class MovieTableController {
     }
     
     public void loadRecentMoviesTable() {
-        SwingWorker loadRecentMoviesWorker = new SwingWorker<Collection<Movie>, Movie>() {
+        SwingWorker loadRecentMoviesWorker = new SwingWorker<Collection<Recent>, Recent>() {
 
             @Override
-            protected Collection<Movie> doInBackground() throws Exception {
+            protected Collection<Recent> doInBackground() throws Exception {
                 return DatabaseConnection.getInstance().getRecentMovies();
             }
             
             @Override
             protected void done() {
                 try {
-                    Collection<Movie> result = get();
-                    recentPanel.getMovieTableModel().setMovieData(result);
+                    Collection<Recent> result = get();
+                    recentPanel.getRecentMovieTableModel().setRecentMovieData(result);
                 } catch (InterruptedException ex) {
                     System.err.println("Getting a member's recent movies was interrupted");
                     ex.printStackTrace();
@@ -126,7 +127,7 @@ public class MovieTableController {
     }
     
     public void loadPurchasedMoviesTable() {
-        SwingWorker loadPurchasedMoviesWorker = new SwingWorker<Collection<Purchase>, Movie>() {
+        SwingWorker loadPurchasedMoviesWorker = new SwingWorker<Collection<Purchase>, Purchase>() {
 
             @Override
             protected Collection<Purchase> doInBackground() throws Exception {
@@ -181,7 +182,7 @@ public class MovieTableController {
     }
     
     public void addMovieToPurchased(final Movie movie) {
-        SwingWorker addMovieToPurchasedWorker = new SwingWorker<Collection<Purchase>, Movie>() {
+        SwingWorker addMovieToPurchasedWorker = new SwingWorker<Collection<Purchase>, Purchase>() {
 
             @Override
             protected Collection<Purchase> doInBackground() throws Exception {
@@ -280,10 +281,10 @@ public class MovieTableController {
     }
 
     public void watchMovie(final Movie movieToWatch) {
-        SwingWorker watchMovieWorker = new SwingWorker<Collection<Movie>, Movie>() {
+        SwingWorker watchMovieWorker = new SwingWorker<Collection<Recent>, Recent>() {
 
             @Override
-            protected Collection<Movie> doInBackground() throws Exception {
+            protected Collection<Recent> doInBackground() throws Exception {
                 DatabaseConnection.getInstance().watchMovie(movieToWatch);
                 return DatabaseConnection.getInstance().getRecentMovies();
             }
@@ -291,8 +292,8 @@ public class MovieTableController {
             @Override
             protected void done() {
                 try {
-                    Collection<Movie> result = get();
-                    recentPanel.getMovieTableModel().setMovieData(result);
+                    Collection<Recent> result = get();
+                    recentPanel.getRecentMovieTableModel().setRecentMovieData(result);
                 } catch (InterruptedException ex) {
                     System.err.println("Watching a purchased movie was interrupted");
                     ex.printStackTrace();
@@ -308,10 +309,10 @@ public class MovieTableController {
     }
     
     public void removeMoviesFromRecent(final Collection<Movie> moviesSelected) {
-        SwingWorker removeMoviesFromRecentWorker = new SwingWorker<Collection<Movie>, Movie>() {
+        SwingWorker removeMoviesFromRecentWorker = new SwingWorker<Collection<Recent>, Recent>() {
 
             @Override
-            protected Collection<Movie> doInBackground() throws Exception {
+            protected Collection<Recent> doInBackground() throws Exception {
                 DatabaseConnection.getInstance().removeMoviesFromRecent(moviesSelected);
                 return DatabaseConnection.getInstance().getRecentMovies();
             }
@@ -319,8 +320,8 @@ public class MovieTableController {
             @Override
             protected void done() {
                 try {
-                    Collection<Movie> result = get();
-                    recentPanel.getMovieTableModel().setMovieData(result);
+                    Collection<Recent> result = get();
+                    recentPanel.getRecentMovieTableModel().setRecentMovieData(result);
                 } catch (InterruptedException ex) {
                     System.err.println("Removing movies from a member's recent was interrupted");
                     ex.printStackTrace();

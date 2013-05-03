@@ -7,6 +7,7 @@ package edu.rit.cs.dbc.db;
 import edu.rit.cs.dbc.model.Member;
 import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.Purchase;
+import edu.rit.cs.dbc.model.Recent;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -300,8 +301,9 @@ public class DatabaseConnection {
         return queueMovies;
     }
     
-    public Collection<Movie> getRecentMovies() {
-        Collection<Movie> recentMovies = new ArrayList<Movie>();
+    public Collection<Recent> getRecentMovies() {
+        Collection<Movie> memberMovies = new ArrayList<Movie>();
+        Collection<Recent> recentMovies = new ArrayList<Recent>();
         
         if (currentMember != null) {
             try {
@@ -330,7 +332,7 @@ public class DatabaseConnection {
                         // to the list of genres
                         boolean doesMovieExist = false;
                         if (!recentMovies.isEmpty()) {
-                            Iterator<Movie> it = recentMovies.iterator();
+                            Iterator<Movie> it = memberMovies.iterator();
                             while (it.hasNext() && !doesMovieExist) {
                                 Movie existingMovie = it.next();
                                 if (movieId == existingMovie.getMovieId()) {
@@ -357,7 +359,36 @@ public class DatabaseConnection {
                                     Integer.parseInt(year), 
                                     movieId, 
                                     score);
-                            recentMovies.add(movieResult);
+                            memberMovies.add(movieResult);
+                        }
+                    }
+                    
+                    if (!memberMovies.isEmpty()) {
+                        statement = con.prepareStatement(
+                                "select * from recent"
+                                + " where member_id = ?"
+                                + " order by timestamp desc"
+                                );
+                        statement.setInt(1, currentMember.getMemberId());
+                        resultSet = statement.executeQuery();
+                        while (resultSet.next()) {
+                            Integer movieId = resultSet.getInt("movie_id");
+                            Integer watchcount = resultSet.getInt("watchcount");
+                            Timestamp timestamp = resultSet.getTimestamp("timestamp");
+                            Movie movieResult = null;
+                            for (Movie m : memberMovies) {
+                                if (movieId.equals(m.getMovieId())) {
+                                    movieResult = m;
+                                    break;
+                                }
+                            }
+                            Recent recentResult = new Recent(
+                                    watchcount.intValue(),
+                                    timestamp,
+                                    movieResult,
+                                    currentMember
+                                    );
+                            recentMovies.add(recentResult);
                         }
                     }
 

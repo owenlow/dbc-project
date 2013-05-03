@@ -7,6 +7,7 @@ package edu.rit.cs.dbc.view;
 import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
 import edu.rit.cs.dbc.model.MovieTableModel;
+import edu.rit.cs.dbc.model.RecentMovieTableModel;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -29,8 +30,8 @@ public class RecentPanel extends javax.swing.JPanel {
         this.movieTableController.loadRecentMoviesTable();
     }
 
-    public MovieTableModel getMovieTableModel() {
-        return recentMoviesTableModel;
+    public RecentMovieTableModel getRecentMovieTableModel() {
+        return recentMovieTableModel;
     }
 
     /**
@@ -52,7 +53,7 @@ public class RecentPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(495, 561));
         setLayout(new java.awt.BorderLayout());
 
-        recentTable.setModel(recentMoviesTableModel);
+        recentTable.setModel(recentMovieTableModel);
         recentTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         recentScrollPane.setViewportView(recentTable);
 
@@ -62,14 +63,14 @@ public class RecentPanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(recentScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -100,7 +101,7 @@ public class RecentPanel extends javax.swing.JPanel {
                 .addComponent(clearButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rewatchButton)
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap(233, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +110,7 @@ public class RecentPanel extends javax.swing.JPanel {
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearButton)
                     .addComponent(rewatchButton))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
@@ -122,7 +123,7 @@ public class RecentPanel extends javax.swing.JPanel {
         }
         Collection<Movie> moviesSelected = new ArrayList<>();
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
-            Movie m = recentMoviesTableModel.getMovieAt(selectedRows[rowIndex]);
+            Movie m = recentMovieTableModel.getRecentMovieAt(selectedRows[rowIndex]).getMovie();
             if (m != null) {
                 moviesSelected.add(m);
             }
@@ -136,7 +137,7 @@ public class RecentPanel extends javax.swing.JPanel {
         int selectedRow = recentTable.getSelectedRow();
         if (selectedRow > -1) {
             selectedRow = recentTable.convertRowIndexToModel(selectedRow);
-            Movie m = recentMoviesTableModel.getMovieAt(selectedRow);
+            Movie m = recentMovieTableModel.getRecentMovieAt(selectedRow).getMovie();
             movieTableController.watchMovie(m);
         }
     }//GEN-LAST:event_rewatchButtonActionPerformed
@@ -150,6 +151,6 @@ public class RecentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
     
-    private MovieTableModel recentMoviesTableModel = new MovieTableModel();
+    private RecentMovieTableModel recentMovieTableModel = new RecentMovieTableModel();
     private MovieTableController movieTableController;
 }
