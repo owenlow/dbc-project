@@ -5,15 +5,11 @@
 package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
-import edu.rit.cs.dbc.model.Movie;
-import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.model.Purchase;
 import edu.rit.cs.dbc.model.PurchaseMovieTableModel;
-import javax.swing.JOptionPane;
 
 /**
- *
- * @author owen
+ * The screen containing a member's collection of purchased movies
  */
 public class PurchasePanel extends javax.swing.JPanel {
 
@@ -23,12 +19,23 @@ public class PurchasePanel extends javax.swing.JPanel {
     public PurchasePanel() {
         initComponents();
     }
+    
+    /**
+     * Have the mediator register this view and load the 
+     * movies in the table
+     * @param movieTableController the mediator to relay communication
+     *                             between views
+     */
     public void registerController(MovieTableController movieTableController) {
         this.movieTableController = movieTableController;
         this.movieTableController.registerPurchasedPanel(this);
         this.movieTableController.loadPurchasedMoviesTable();
     }
 
+    /**
+     * Returns the table model of this screen
+     * @return the table model of a member's purchased movies
+     */
     public PurchaseMovieTableModel getPurchaseMovieTableModel() {
         return purchaseMovieTableModel;
     }
@@ -44,7 +51,6 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         buttonPanel = new javax.swing.JPanel();
         watchButton = new javax.swing.JButton();
-        statButton = new javax.swing.JButton();
         upperPanel = new javax.swing.JPanel();
         purchaseScrollPane = new javax.swing.JScrollPane();
         purchaseTable = new javax.swing.JTable();
@@ -60,13 +66,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             }
         });
 
-        statButton.setText("My Statistics");
-        statButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
@@ -74,20 +73,14 @@ public class PurchasePanel extends javax.swing.JPanel {
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
-                .addComponent(statButton)
-                .addContainerGap())
+                .addContainerGap(319, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(watchButton)
-                .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(statButton)
-                .addContainerGap())
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
@@ -102,20 +95,26 @@ public class PurchasePanel extends javax.swing.JPanel {
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
         upperPanelLayout.setVerticalGroup(
             upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(purchaseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         add(upperPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Add the purchased movie to the recently watched table if the movie
+     * has not been watched yet; otherwise, increment the watch count 
+     * of the movie
+     * @param evt the action event triggered by the "Watch" button
+     */
     private void watchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_watchButtonActionPerformed
         int selectedRow = purchaseTable.getSelectedRow();
         if (selectedRow > -1) {
@@ -125,20 +124,17 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_watchButtonActionPerformed
 
-    private void statButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statButtonActionPerformed
-        
-        JOptionPane.showMessageDialog(this, "Dialog", "User Statistics", JOptionPane.PLAIN_MESSAGE);
-    }//GEN-LAST:event_statButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JScrollPane purchaseScrollPane;
     private javax.swing.JTable purchaseTable;
-    private javax.swing.JButton statButton;
     private javax.swing.JPanel upperPanel;
     private javax.swing.JButton watchButton;
     // End of variables declaration//GEN-END:variables
     
+    // the table model of the member's purchased movies
     private PurchaseMovieTableModel purchaseMovieTableModel = new PurchaseMovieTableModel();
+    
+    // the mediator for sending requests on background threads
     private MovieTableController movieTableController;
 }

@@ -4,15 +4,15 @@
  */
 package edu.rit.cs.dbc.view;
 
-import edu.rit.cs.dbc.DatabaseApp;
 import edu.rit.cs.dbc.db.DatabaseConnection;
+
 import javax.swing.JFrame;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
- * @author ptr5201
+ * A small form for providing an authentication mechanism
+ * to use the application
  */
 public class LoginScreen extends javax.swing.JFrame {
 
@@ -23,6 +23,12 @@ public class LoginScreen extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Sets the visibility of the label which indicates
+     * if the login was unsuccessful
+     * @param visible true if the label should be displayed;
+     *                false if otherwise
+     */
     private void setInvalidLoginLabelVisible(boolean visible) {
         if (invalidLoginLabel.isVisible() != visible) {
             invalidLoginLabel.setVisible(visible);
@@ -160,11 +166,20 @@ public class LoginScreen extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Attempt to login to the application with the user's specified
+     * credentials
+     * @param evt the action event triggered by the "Login" button
+     */
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         setInvalidLoginLabelVisible(false);
         
+        // only attempt to login if none of the fields are empty
         if (!"".equals(usernameTextField.getText()) &&
                 passwordTextField.getPassword().length > 0) {
+            // if a member is able to successfully log in to the application,
+            // close the current dialog and open the main application screen;
+            // otherwise, make the invalid login label visible
             if (DatabaseConnection.getInstance().memberLogin(
                     usernameTextField.getText(), 
                     new String(passwordTextField.getPassword()))) {
@@ -179,12 +194,17 @@ public class LoginScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginActionPerformed
 
+    /**
+     * Open the new user form to register a new member into
+     * the system
+     * @param evt the action event triggered by the "New Account" button
+     */
     private void newAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAccountButtonActionPerformed
         // close existing frame
         setVisible(false);
         dispose();
         
-        // Open newuser frame
+        // Open new user frame
         NewUserCreationFrame frame = new NewUserCreationFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

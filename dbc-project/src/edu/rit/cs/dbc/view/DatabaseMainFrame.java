@@ -7,8 +7,8 @@ package edu.rit.cs.dbc.view;
 import edu.rit.cs.dbc.controller.MovieTableController;
 
 /**
- *
- * @author Patrick
+ * The main application screen for holding screens and tables 
+ * about movie data
  */
 public class DatabaseMainFrame extends javax.swing.JFrame {
 
@@ -75,6 +75,7 @@ public class DatabaseMainFrame extends javax.swing.JFrame {
     private edu.rit.cs.dbc.view.RecentPanel recentPanel;
     // End of variables declaration//GEN-END:variables
 
+    // the mediator for passing to the views contained within this main frame
     private MovieTableController movieTableController = new MovieTableController();
 
 }

@@ -6,14 +6,12 @@ package edu.rit.cs.dbc.view;
 
 import edu.rit.cs.dbc.controller.MovieTableController;
 import edu.rit.cs.dbc.model.Movie;
-import edu.rit.cs.dbc.model.MovieTableModel;
 import edu.rit.cs.dbc.model.RecentMovieTableModel;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- *
- * @author owen
+ * The screen containing a member's collection of recently watched movies
  */
 public class RecentPanel extends javax.swing.JPanel {
 
@@ -24,12 +22,22 @@ public class RecentPanel extends javax.swing.JPanel {
         initComponents();
     }
     
+    /**
+     * Have the mediator register this view and load the 
+     * movies in the table
+     * @param movieTableController the mediator to relay communication
+     *                             between views
+     */
     public void registerController(MovieTableController movieTableController) {
         this.movieTableController = movieTableController;
         this.movieTableController.registerRecentPanel(this);
         this.movieTableController.loadRecentMoviesTable();
     }
 
+    /**
+     * Returns the table model of this screen
+     * @return the table model of a member's recently watched movies
+     */
     public RecentMovieTableModel getRecentMovieTableModel() {
         return recentMovieTableModel;
     }
@@ -116,6 +124,11 @@ public class RecentPanel extends javax.swing.JPanel {
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Remove the selected movies from the member's collection of
+     * recently watched movies
+     * @param evt the action event triggered by the "Clear" button
+     */
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         int[] selectedRows = recentTable.getSelectedRows();
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
@@ -133,6 +146,10 @@ public class RecentPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_clearButtonActionPerformed
 
+    /**
+     * Increment the watch count of a selected movie
+     * @param evt the action event triggered by the "Rewatch" button
+     */
     private void rewatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rewatchButtonActionPerformed
         int selectedRow = recentTable.getSelectedRow();
         if (selectedRow > -1) {
@@ -151,6 +168,9 @@ public class RecentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
     
+    // the table model of the member's recently watched movies
     private RecentMovieTableModel recentMovieTableModel = new RecentMovieTableModel();
+    
+    // the mediator for sending requests on background threads
     private MovieTableController movieTableController;
 }

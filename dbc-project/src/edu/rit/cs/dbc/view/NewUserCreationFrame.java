@@ -4,14 +4,12 @@
  */
 package edu.rit.cs.dbc.view;
 
-import edu.rit.cs.dbc.DatabaseApp;
 import edu.rit.cs.dbc.db.DatabaseConnection;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
- * @author owen
+ * A user form for registering new members into the system
  */
 public class NewUserCreationFrame extends javax.swing.JFrame {
 
@@ -220,13 +218,27 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Attempts to submit a request to create a new user with the 
+     * specified credentials
+     * @param evt the action event triggered by the "Create Account" button
+     */
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
+        // only proceed if none of the fields are empty; otherwise, display
+        // an error message that none of the fields can be empty
+        // in an error label
         if (!"".equals(usernameTextField.getText()) &&
                 !"".equals(fullNameTextField.getText()) && 
                 !"".equals(new String(passwordTextField.getPassword())) &&
                 !"".equals(new String(verifyPasswordTextField.getPassword()))) {
             
+            // if the passwords in both fields match, then proceed; 
+            // otherwise, display an error message that the passwords
+            // don't in an error label
             if (new String(passwordTextField.getPassword()).equals(new String(verifyPasswordTextField.getPassword()))) {
+                // attempt to create a user only if the user does
+                // not yet exist; otherwise, display an error message
+                // that the username is already taken
                 if (!DatabaseConnection.getInstance().memberExists(usernameTextField.getText())) {
                     if (DatabaseConnection.getInstance().createMember(
                         usernameTextField.getText(), fullNameTextField.getText(), new String(passwordTextField.getPassword()))) {
@@ -244,12 +256,22 @@ public class NewUserCreationFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
+    /**
+     * Closes the registration form and returns back to the login screen
+     * @param evt the action event triggered by the "Close" button
+     */
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         // Close
         dispose();
         new LoginScreen().setVisible(true);
     }//GEN-LAST:event_closeButtonActionPerformed
 
+    /**
+     * Sets the visibility and error message of the error label
+     * @param visible true if the error label should be displayed;
+     *                false if otherwise
+     * @param errorMessage the message of the error to be displayed
+     */
     private void setErrorLabel(boolean visible, String errorMessage) {
         if (errorLabel.isVisible() != visible) {
             errorLabel.setVisible(visible);

@@ -1,12 +1,9 @@
 package edu.rit.cs.dbc;
 
 import edu.rit.cs.dbc.view.LoginScreen;
-import edu.rit.cs.dbc.view.NewUserCreationFrame;
-import javax.swing.JFrame;
 
 /**
- *
- * @author ptr5201
+ * Main entry point for the application.
  */
 public class DatabaseApp {
     /**

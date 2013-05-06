@@ -32,7 +32,7 @@
               <Component id="filterPanel" alignment="0" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="moviesTableScollPane" pref="483" max="32767" attributes="0"/>
+                  <Component id="moviesTableScollPane" pref="471" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -42,7 +42,7 @@
               <Group type="102" attributes="0">
                   <Component id="filterPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="moviesTableScollPane" pref="407" max="32767" attributes="0"/>
+                  <Component id="moviesTableScollPane" pref="396" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -142,7 +142,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="addToQueueButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="359" max="32767" attributes="0"/>
+                  <EmptySpace pref="372" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

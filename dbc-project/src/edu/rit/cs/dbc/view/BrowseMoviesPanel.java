@@ -16,8 +16,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
 /**
- *
- * @author ptr5201
+ * The screen for browsing all available movies from the database
  */
 public class BrowseMoviesPanel extends javax.swing.JPanel {
 
@@ -28,12 +27,22 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         initComponents();
     }
     
+    /**
+     * Have the mediator register this view and load the 
+     * movies in the table
+     * @param movieTableController the mediator to relay communication
+     *                             between views
+     */
     public void registerController(MovieTableController movieTableController) {
         this.movieTableController = movieTableController;
         this.movieTableController.registerBrowseMoviesPanel(this);
         this.movieTableController.loadBrowseMoviesTable();
     }
 
+    /**
+     * Returns the table model of this screen
+     * @return the table model of all movies
+     */
     public MovieTableModel getMovieTableModel() {
         return browseMoviesTableModel;
     }
@@ -182,10 +191,19 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Updates the filter for the movie results whenever the 
+     * combo box is changed
+     * @param evt the action event triggered by the combo box
+     */
     private void filterByComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterByComboBoxActionPerformed
         filterMovieResults();
     }//GEN-LAST:event_filterByComboBoxActionPerformed
 
+    /**
+     * Submits a request to add any selected movies to the member's queue
+     * @param evt the action event triggered by the "Add to Queue" button
+     */
     private void addToQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToQueueButtonActionPerformed
         int selection[] = browseMoviesTable.getSelectedRows();
         for (int selectionIndex = 0; selectionIndex < selection.length; selectionIndex++) {
@@ -215,8 +233,13 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 
+    // the table model of all movies
     private MovieTableModel browseMoviesTableModel = new MovieTableModel();
+    
+    // sorter object for sorting the table model
     private TableRowSorter<MovieTableModel> sorter = new TableRowSorter<>(browseMoviesTableModel);
+    
+    // the mediator for sending requests on background threads
     private MovieTableController movieTableController;
 
 }

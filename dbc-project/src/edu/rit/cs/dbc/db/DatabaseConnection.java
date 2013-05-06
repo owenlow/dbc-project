@@ -26,17 +26,28 @@ import org.postgresql.util.PSQLException;
 import org.postgresql.util.ServerErrorMessage;
 
 /**
- *
- * @author ptr5201
+ * A database connection object that provides operations
+ * to access and modify data in the database
  */
 public class DatabaseConnection {
     
+    // database information for connecting to the database
     private static Properties prop = null;
+    
+    // the connection object to create and execute SQL statements from
     private static Connection con = null;
+    
+    // the member that has currently logged into the application
     private static Member currentMember = null;
     
+    // singleton to ensure that there is only one instance
+    // of this application ever created
     private static DatabaseConnection instance = null;
     
+    /**
+     * A private constructor for setting up the connection
+     * information and creating the instance
+     */
     private DatabaseConnection() {
         prop = new Properties();
         
@@ -47,16 +58,28 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Returns the instance of this class, and creates the
+     * instance if necessary
+     * @return an instance of this class that is connected
+     *         to the database
+     */
     public static DatabaseConnection getInstance() {
         if  (instance == null) {
             instance = new DatabaseConnection();
         }
         
+        // make sure we are connected to the database
+        // even if the instance is already created
         connect();
         
         return instance;
     }
     
+    /**
+     * Create and establish the connection to the database using
+     * the database information from the properties file
+     */
     private static void connect() {
         try {
             if (prop != null && 
@@ -78,17 +101,31 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Attempt to authenticate a member and set the current
+     * member of this session if the login was successful
+     * @param username the member's username
+     * @param password the member's password
+     * @return true if authentication was successful; false if otherwise
+     */
     public boolean memberLogin(String username, String password) {
         boolean validLogin = false;
         
         if (con != null) {
             try {
+                // get the necessary data for the specified username
                 PreparedStatement statement = 
                         con.prepareStatement("select * from member where username = ?");
                 statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next() && !validLogin) {
+                    // digest the password specified by the user and 
+                    // check whether or not that digest matches the 
+                    // digested password in the database
                     if (digestPassword(password).equals(resultSet.getString("password"))) {
+                        // the authentication was successful, so set 
+                        // the session's current member to the user who
+                        // successfully authenticated
                         currentMember = new Member(
                                 resultSet.getInt("member_id"), 
                                 resultSet.getString("fullname"), 
@@ -106,16 +143,25 @@ public class DatabaseConnection {
         return validLogin;
     }
     
+    /**
+     * Determine whether or not a member exists in the database
+     * @param username a member's username
+     * @return true if the member exists in the database; false if otherwise
+     */
     public boolean memberExists( String username ) {
         boolean memberExists = false;
         
         if (con != null) {
             try {
-                PreparedStatement statement = 
-                        con.prepareStatement("select * from member where username = ?");
+                // perform a SQL query to find data with the matching username
+                PreparedStatement statement = con.prepareStatement(
+                        "select * from member where username = ?"
+                        );
                 statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next() && !memberExists) {
+                    // if the specified username matches the result from the
+                    // SQL query, then the member does exist
                     if (username.equals(resultSet.getString("username"))) {
                         memberExists = true;
                     }
@@ -129,15 +175,28 @@ public class DatabaseConnection {
         return memberExists;
     }
     
+    /**
+     * Register a new member's login credentials into the database
+     * @param username the new member's username
+     * @param fullname the new member's full name
+     * @param password the new member's password
+     * @return true if the member was successfully created; false if otherwise
+     */
     public boolean createMember( String username, String fullname, String password ) {
         boolean successfulMemberCreation = false;
         
         if (con != null) {
             try {
-                PreparedStatement statement = 
-                        con.prepareStatement("insert into member (username, fullname, password) values ( ?, ?, ? )");
+                // perform a SQL statement to insert the member's login
+                // credentials into the database
+                PreparedStatement statement = con.prepareStatement(
+                        "insert into member"
+                        + " (username, fullname, password)"
+                        + " values ( ?, ?, ? )"
+                        );
                 statement.setString(1, username);
                 statement.setString(2, fullname);
+                // make sure the member's password in not in plain text
                 statement.setString(3, digestPassword(password));
                 
                 statement.execute();
@@ -151,6 +210,9 @@ public class DatabaseConnection {
         return successfulMemberCreation;
     }
     
+    /**
+     * Close the connection to the database
+     */
     public void close() {
         try {
             if (instance != null) {
@@ -164,8 +226,12 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Get the entire collection of movies from the database
+     * @return all the movies from the database
+     */
     public Collection<Movie> getAllMovies() {
-        Collection<Movie> allMovies = new ArrayList<>();
+        Collection<Movie> allMovies = new ArrayList<Movie>();
         try {
             if (!con.isClosed()) {
                 // get all the movies from the database, including each
@@ -207,12 +273,12 @@ public class DatabaseConnection {
                         Float score = resultSet.getFloat("score");
                         Collection<String> movieGenres = new ArrayList<>();
                         movieGenres.add(genre);
-                        Movie movieResult = new Movie(
+                        Movie movieResult = new Movie( 
+                                movieId, 
                                 title, 
                                 rating, 
                                 movieGenres, 
-                                Integer.parseInt(year), 
-                                movieId, 
+                                Integer.parseInt(year),
                                 score);
                         allMovies.add(movieResult);
                     }
@@ -228,8 +294,13 @@ public class DatabaseConnection {
         return allMovies;
     }
 
+    /**
+     * Get the collection of the current member's movies that
+     * they have added to their queue
+     * @return the current member's queue of movies
+     */
     public Collection<Movie> getQueueMovies() {
-        Collection<Movie> queueMovies = new ArrayList<>();
+        Collection<Movie> queueMovies = new ArrayList<Movie>();
         
         if (currentMember != null) {
             try {
@@ -279,11 +350,11 @@ public class DatabaseConnection {
                             Collection<String> movieGenres = new ArrayList<>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
+                                    movieId, 
                                     title, 
                                     rating, 
                                     movieGenres, 
                                     Integer.parseInt(year), 
-                                    movieId, 
                                     score);
                             queueMovies.add(movieResult);
                         }
@@ -301,15 +372,24 @@ public class DatabaseConnection {
         return queueMovies;
     }
     
+    /**
+     * Get the current member's collection of movies that have
+     * been recently watched
+     * @return the current member's collection of recently watched movies
+     */
     public Collection<Recent> getRecentMovies() {
+        // the collection of the member's movies in their queue
         Collection<Movie> memberMovies = new ArrayList<Movie>();
+        
+        // the collection of the member's movies that have been
+        // recently watched
         Collection<Recent> recentMovies = new ArrayList<Recent>();
         
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
                     // get all the movies from the database, including each
-                    // movie's list of genres
+                    // movie's list of genres, ordered by the latest timestamp
                     PreparedStatement statement = con.prepareStatement(
                             "select * from movie"
                             + " natural join genre"
@@ -353,16 +433,18 @@ public class DatabaseConnection {
                             Collection<String> movieGenres = new ArrayList<>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
+                                    movieId, 
                                     title, 
                                     rating, 
                                     movieGenres, 
                                     Integer.parseInt(year), 
-                                    movieId, 
                                     score);
                             memberMovies.add(movieResult);
                         }
                     }
                     
+                    // filter out any movies from the member's collection of
+                    // movies that have not been recently watched
                     if (!memberMovies.isEmpty()) {
                         statement = con.prepareStatement(
                                 "select * from recent"
@@ -372,16 +454,25 @@ public class DatabaseConnection {
                         statement.setInt(1, currentMember.getMemberId());
                         resultSet = statement.executeQuery();
                         while (resultSet.next()) {
+                            // get the information about a recently 
+                            // watched movie
                             Integer movieId = resultSet.getInt("movie_id");
                             Integer watchcount = resultSet.getInt("watchcount");
                             Timestamp timestamp = resultSet.getTimestamp("timestamp");
                             Movie movieResult = null;
+                            
+                            // get the recently watched movie instance whose 
+                            // id matches with a movie from the member's
+                            // collection of movies
                             for (Movie m : memberMovies) {
                                 if (movieId.equals(m.getMovieId())) {
                                     movieResult = m;
                                     break;
                                 }
                             }
+                            
+                            // construct a recently watched movie instance
+                            // and add it to the collection to return
                             Recent recentResult = new Recent(
                                     watchcount.intValue(),
                                     timestamp,
@@ -404,10 +495,18 @@ public class DatabaseConnection {
         return recentMovies;
     }
     
+    /**
+     * Get the current member's collection of movies that have
+     * been purchased
+     * @return the current member's collection of purchased movies
+     */
     public Collection<Purchase> getPurchasedMovies() {
+        // the collection of the member's movies in their queue
+        Collection<Movie> memberMovies = new ArrayList<Movie>();
         
-        Collection<Movie> memberMovies = new ArrayList<>();
-        Collection<Purchase> purchasedMovies = new ArrayList<>();
+        // the collection of the member's movies that have been
+        // purchased
+        Collection<Purchase> purchasedMovies = new ArrayList<Purchase>();
         
         if (currentMember != null) {
             try {
@@ -457,17 +556,19 @@ public class DatabaseConnection {
                             Collection<String> movieGenres = new ArrayList<>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
+                                    movieId, 
                                     title, 
                                     rating, 
                                     movieGenres, 
                                     Integer.parseInt(year), 
-                                    movieId, 
                                     score
                                     );
                             memberMovies.add(movieResult);
                         }
                     }
                     
+                    // filter out any movies from the member's collection of
+                    // movies that have not been purchased
                     if (!memberMovies.isEmpty()) {
                         statement = con.prepareStatement(
                                 "select * from purchase"
@@ -477,16 +578,23 @@ public class DatabaseConnection {
                         statement.setInt(1, currentMember.getMemberId());
                         resultSet = statement.executeQuery();
                         while (resultSet.next()) {
+                            // get the information about a purchased movie
                             Integer movieId = resultSet.getInt("movie_id");
                             Double price = resultSet.getDouble("price");
                             Timestamp timestamp = resultSet.getTimestamp("timestamp");
                             Movie movieResult = null;
+                            // get the purchased movie instance whose 
+                            // id matches with a movie from the member's
+                            // collection of movies
                             for (Movie m : memberMovies) {
                                 if (movieId.equals(m.getMovieId())) {
                                     movieResult = m;
                                     break;
                                 }
                             }
+                            
+                            // construct a purchased movie instance
+                            // and add it to the collection to return
                             Purchase purchaseResult = new Purchase(
                                     price.doubleValue(),
                                     timestamp,
@@ -510,10 +618,19 @@ public class DatabaseConnection {
         
     }
     
+    /**
+     * Add movies to the current member's queue
+     * @param moviesSelected movies selected from the table in the 
+     *                       "Browse Movies" screen
+     */
     public void addMoviesToQueue(Collection<Movie> moviesSelected) {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
+                    // get the maximum rank for existing movies in the current
+                    // member's queue and increase that rank by 1, which is to
+                    // be inserted for each selected movie, into the current
+                    // member's queue
                     for (Movie movieToQueue : moviesSelected) {
                         PreparedStatement statement = con.prepareStatement(
                                 "select rank from queue"
@@ -524,23 +641,33 @@ public class DatabaseConnection {
                         statement.setInt(1, currentMember.getMemberId());
                         statement.setInt(2, currentMember.getMemberId());
                         ResultSet result = statement.executeQuery();
+                        
+                        // after getting the maximum rank, if it exists,
+                        // increment the rank's value
                         int newRank = 0;
                         while (result.next()) {
                             newRank = result.getInt("rank");
                         }
+                        newRank++;
                         
+                        // prepare the SQL statement to insert a 
+                        // movie into the current member's queue
                         statement = con.prepareStatement(
                                 "insert into queue"
                                 + " (member_id, movie_id, rank)"
-                                + " values (?, ?, ?)");
+                                + " values (?, ?, ?)"
+                                );
                         statement.setInt(1, currentMember.getMemberId());
                         statement.setInt(2, movieToQueue.getMovieId());
-                        statement.setInt(3, newRank + 1);
+                        statement.setInt(3, newRank);
                         int insertResult = statement.executeUpdate();
+                        
                         statement.close();
                     }
                 }
             } catch (PSQLException ex) {
+                // show an error message if a movie that the member wished
+                // to add to their queue already exists in their queue
                 ServerErrorMessage errorMessage = ex.getServerErrorMessage();
                 if (errorMessage.getMessage().equals(
                         "duplicate key value violates unique constraint \"queue_pkey\"")) {
@@ -558,8 +685,12 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Purchase a movie by adding it to their collection of purchased movies
+     * @param movie the movie to purchase
+     */
     public void addMovieToPurchased(Movie movie) {
-        // Add this movie to purchased, remove from queue
+        // Add this movie to purchased
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
@@ -573,6 +704,9 @@ public class DatabaseConnection {
                     statement.close();
                 }
             } catch (PSQLException ex) {
+                // show an error message if a movie that the member wished
+                // to purchase already exists in their collection of 
+                // purchased movies
                 ServerErrorMessage errorMessage = ex.getServerErrorMessage();
                 if (errorMessage.getMessage().equals(
                         "duplicate key value violates unique constraint \"purchase_pkey\"")) {
@@ -590,11 +724,16 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Increment the watch count of a movie
+     * @param movie the movie from either the table in the purchased screen
+     *        or the table in the recently watched screen
+     */
     public void watchMovie(Movie movie) {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
-                    // Update
+                    // increment the watchcount of the selected movie
                     PreparedStatement statement = con.prepareStatement(
                             "update recent set"
                             + " watchcount = watchcount + 1"
@@ -604,6 +743,8 @@ public class DatabaseConnection {
                     statement.setInt(2, movie.getMovieId());
                     int updateResult = statement.executeUpdate();
                     
+                    // if the selected movie did not exist yet in the 
+                    // recently watched table, then add it
                     if (updateResult == 0) {
                         statement = con.prepareStatement(
                                 "insert into recent (member_id, movie_id, watchcount)"
@@ -624,10 +765,20 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Swap the ranks of two movies in a member's queue
+     * @param currentMovie the selected movie that the member desires to update
+     * @param otherMovie the movie either ahead of behind the selected movie
+     *                   to swap ranks with
+     */
     public void swapMovieRank(Movie currentMovie, Movie otherMovie) {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
+                    // use a virtual copy of the queue table in order to take 
+                    // the rank of one movie in either the original or copy
+                    // queue table and replace it with the other movie in
+                    // either the original or copy queue table
                     PreparedStatement statement = con.prepareStatement(
                             "update queue set rank = queue_temp.rank"
                             + " from queue as queue_temp where"
@@ -652,13 +803,24 @@ public class DatabaseConnection {
         }
     }
     
+    /**
+     * Helper method to digest, or hash, a specified password
+     * @param password the plaintext string to digest
+     * @return 
+     */
     private String digestPassword(String password) {
         String digestedPassword = "";
         
+        // get the salt value from the properties file
+        // and append it to the current password for
+        // additional security
         password = password + prop.getProperty("db.salt");
         byte input[] = password.getBytes();
         
         try {
+            // using the specified hash algorithm from the 
+            // properties file, digest the password with the
+            // appended salt and return the result in hexadecimal
             MessageDigest md = MessageDigest.getInstance(
                     prop.getProperty("db.mdAlgorithm"));
             byte output[] = md.digest(input);
@@ -676,76 +838,17 @@ public class DatabaseConnection {
         
         return digestedPassword;
     }
-    
+
     /**
-     * NOTE: this method throws a NullPointerException if called
-     * from one of methods that returns a collection of movies;
-     * needs fixing
-     * @param resultSet
-     * @param movieCollection
-     * @return 
+     * Remove the selected movies from a member's queue
+     * @param moviesSelected the selected movies from the table in the
+     *                       member queue screen
      */
-    private Movie constructMovie(ResultSet resultSet, Collection<Movie> movieCollection) {
-        Movie movieResult = null;
-        
-        try {
-            System.out.println(Thread.currentThread().toString() + ": getting movieId and genre");
-            Integer movieId = resultSet.getInt("movie_id");
-            String genre = resultSet.getString("genre");
-
-            // check to see if the current movie matches with
-            // an existing movie that was already added. if this
-            // is the case, then a new genre needs to be added
-            // to the list of genres
-            boolean doesMovieExist = false;
-            if (!movieCollection.isEmpty()) {
-                System.out.println(Thread.currentThread().toString() + ": movieCollection not empty");
-                Iterator<Movie> it = movieCollection.iterator();
-                System.out.println(Thread.currentThread().toString() + ": got iterator");
-                while (it.hasNext() && !doesMovieExist) {
-                    System.out.println(Thread.currentThread().toString() + ": iterator has next and movie not found yet");
-                    Movie existingMovie = it.next();
-                    System.out.println(Thread.currentThread().toString() + ": got a movie: " + existingMovie);
-                    System.out.println(Thread.currentThread().toString() + ": movieId(" + movieId + ") == existingMovie.ID(" + existingMovie.getMovieId() + ")");
-                    if (movieId.intValue() == existingMovie.getMovieId()) {
-                        System.out.println(Thread.currentThread().toString() + ": movie matched");
-                        doesMovieExist = true;
-                        existingMovie.getGenres().add(genre);
-                        System.out.println(Thread.currentThread().toString() + ": genre added: " + genre);
-                    }
-                }
-            }
-
-            // if a movie hasn't been added to the collection yet,
-            // then create an instance using the values from the
-            // query
-            if (!doesMovieExist) {
-                String title = resultSet.getString("title");
-                String rating = resultSet.getString("rating");
-                String year = resultSet.getString("year");
-                Float score = resultSet.getFloat("score");
-                Collection<String> movieGenres = new ArrayList<>();
-                movieGenres.add(genre);
-                movieResult = new Movie(
-                        title, 
-                        rating, 
-                        movieGenres, 
-                        Integer.parseInt(year), 
-                        movieId, 
-                        score);
-            }
-        } catch (SQLException sqle) {
-            System.err.println("Constructing movie with invalid result set");
-            sqle.printStackTrace();
-        }
-        
-        return movieResult;
-    }
-
     public void removeMoviesFromQueue(Collection<Movie> moviesSelected) {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
+                    // delete each movie from the member's queue
                     PreparedStatement statement = null;
                     for (Movie m : moviesSelected) {
                         statement = con.prepareStatement(
@@ -757,6 +860,8 @@ public class DatabaseConnection {
                         int deleteResult = statement.executeUpdate();
                     }
                     
+                    // re-order the rank of the existing movies
+                    // in the member's queue
                     int newRank = 1;
                     for (Movie m : getQueueMovies()) {
                         statement = con.prepareStatement(
@@ -780,36 +885,18 @@ public class DatabaseConnection {
         }
     }
     
-    public String getStatistics() {
-        String result = null;
-        
-        try {
-            if (!con.isClosed()) {
-                PreparedStatement statement;
-                
-                // Sum
-                statement = con.prepareStatement("select sum(price) "
-                        + "from purchase where member_id=?");
-                statement.setInt(1, currentMember.getMemberId());
-                
-                ResultSet r = statement.executeQuery();
-                System.out.println( r.getString(0) );
-                
-                statement.close();
-            }
-        } catch (SQLException ex) {
-            System.err.println("Database error trying to get statistics"
-                    + " from a member's purchase table");
-            ex.printStackTrace();
-        }
-        
-        return result;
-    }
-    
+    /**
+     * Remove the selected movies from a member's collection of 
+     * recently watched movies
+     * @param moviesSelected the selected movies from the table in the
+     *                       recently watched screen
+     */
     public void removeMoviesFromRecent(Collection<Movie> moviesSelected) {
         if (currentMember != null) {
             try {
                 if (!con.isClosed()) {
+                    // delete each movie from the member's table of 
+                    // recently watched movies
                     PreparedStatement statement = null;
                     for (Movie m : moviesSelected) {
                         statement = con.prepareStatement(

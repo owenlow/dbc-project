@@ -12,8 +12,7 @@ import java.util.Collection;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author ptr5201
+ * The screen containing a member's queue of movies
  */
 public class MemberQueuePanel extends javax.swing.JPanel {
 
@@ -24,16 +23,31 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         initComponents();
     }
     
+    /**
+     * Have the mediator register this view and load the 
+     * movies in the table
+     * @param movieTableController the mediator to relay communication
+     *                             between views
+     */
     public void registerController(MovieTableController movieTableController) {
         this.movieTableController = movieTableController;
         this.movieTableController.registerMemberQueuePanel(this);
         this.movieTableController.loadQueueMoviesTable();
     }
 
+    /**
+     * Returns the table model of this screen
+     * @return the table model of the member's queue of movies
+     */
     public MovieTableModel getMovieTableModel() {
         return queueMoviesTableModel;
     }
 
+    /**
+     * Sets rows in the table to be highlighted
+     * @param i the starting row to be highlighted
+     * @param i0 the ending row to be highlighted
+     */
     public void setRowSelectionInterval(int i, int i0) {
         moviesQueueTable.setRowSelectionInterval(i, i0);
     }
@@ -161,6 +175,10 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         add(buttonPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Move a movie in a member's queue up by decreasing the rank of the movie
+     * @param evt the action event triggered by the "up arrow" button
+     */
     private void moveMovieUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveMovieUpButtonActionPerformed
         // only allow updating the rank of one movie at a time
         if (moviesQueueTable.getSelectedRowCount() == 1) {
@@ -175,6 +193,10 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_moveMovieUpButtonActionPerformed
 
+    /**
+     * Move a movie in a member's queue down by increasing the rank of the movie
+     * @param evt the action event triggered by the "down arrow" button
+     */
     private void moveMovieDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveMovieDownButtonActionPerformed
         // only allow updating the rank of one movie at a time
         if (moviesQueueTable.getSelectedRowCount() == 1) {
@@ -189,6 +211,10 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_moveMovieDownButtonActionPerformed
 
+    /**
+     * Removes the selected movies from a member's queue
+     * @param evt the action event triggered by the "Remove From Queue" button
+     */
     private void removeFromQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFromQueueButtonActionPerformed
         int[] selectedRows = moviesQueueTable.getSelectedRows();
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
@@ -206,14 +232,14 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_removeFromQueueButtonActionPerformed
 
+    /**
+     * Purchases a movie by adding it to the member's collection of
+     * purchased movies, and then removes it from the member's queue
+     * @param evt 
+     */
     private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
-        
-        
-        
         int selection = moviesQueueTable.getSelectedRow();
-        
         selection = moviesQueueTable.convertRowIndexToModel(selection);
-        
         Movie m = queueMoviesTableModel.getMovieAt(selection);
         
         Object[] options = {"Yes", "No"};
@@ -231,10 +257,8 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         );
         if ( n == 0 ) {
             movieTableController.addMovieToPurchased(m);
-
             Collection<Movie> temp = new ArrayList<Movie>();
             temp.add(m);
-
             movieTableController.removeMoviesFromQueue(temp);
         }
     }//GEN-LAST:event_purchaseButtonActionPerformed
@@ -251,6 +275,9 @@ public class MemberQueuePanel extends javax.swing.JPanel {
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 
+    // the table model of the member's queue of movies
     private MovieTableModel queueMoviesTableModel = new MovieTableModel();
+    
+    // the mediator for sending requests on background threads
     private MovieTableController movieTableController;
 }
