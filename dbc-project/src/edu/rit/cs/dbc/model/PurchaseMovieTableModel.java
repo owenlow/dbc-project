@@ -20,7 +20,7 @@ public class PurchaseMovieTableModel extends AbstractTableModel {
     };
     
     // the collection of purchase data
-    private Collection<Purchase> purchasedMovieData = new ArrayList<>();
+    private Collection<Purchase> purchasedMovieData = new ArrayList<Purchase>();
 
     /**
      * Returns the number of purchased movies in the table model
@@ -59,32 +59,31 @@ public class PurchaseMovieTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        ArrayList<Purchase> list = new ArrayList<>(purchasedMovieData);
+        ArrayList<Purchase> list = new ArrayList<Purchase>(purchasedMovieData);
         Purchase currentPurchase = list.get(rowIndex);
         Object returnValue = null;
         
         if (columnIndex >= 0 && 
                 columnIndex < PURCHASE_MOVIE_COLUMN_NAMES.length) {
-            switch (getColumnName(columnIndex)) {
-                case "Title":
+            if(getColumnName(columnIndex).equals("Title"))
                     returnValue = currentPurchase.getMovie().getTitle();
-                    break;
-                case "Year":
-                    returnValue = currentPurchase.getMovie().getYear();
-                    break;
-                case "Genre":
-                    returnValue = currentPurchase.getMovie().getGenres();
-                    break;
-                case "Rating":
-                    returnValue = currentPurchase.getMovie().getRating();
-                    break;
-                case "Score":
-                    returnValue = currentPurchase.getMovie().getScore();
-                    break;
-                case "Price":
-                    returnValue = currentPurchase.getPrice();
-                    break;
-            }
+            
+            else if(getColumnName(columnIndex).equals("Year"))
+                returnValue = currentPurchase.getMovie().getYear();
+        
+            else if(getColumnName(columnIndex).equals("Genre"))
+                returnValue = currentPurchase.getMovie().getGenres();
+        
+            else if(getColumnName(columnIndex).equals("Rating"))
+                returnValue = currentPurchase.getMovie().getRating();
+        
+            else if(getColumnName(columnIndex).equals("Score"))
+                returnValue = currentPurchase.getMovie().getScore();
+        
+            else if(getColumnName(columnIndex).equals("Price"))
+                returnValue = currentPurchase.getPrice();
+            
+            
         }
         
         return returnValue;
@@ -96,7 +95,7 @@ public class PurchaseMovieTableModel extends AbstractTableModel {
      * @return a purchased movie instance at the specified row
      */
     public Purchase getPurchaseAt(int rowIndex) {
-        ArrayList<Purchase> list = new ArrayList<>(purchasedMovieData);
+        ArrayList<Purchase> list = new ArrayList<Purchase>(purchasedMovieData);
         Purchase purchaseAtRow = null;
         if (rowIndex >= 0 && rowIndex < purchasedMovieData.size()) {
             purchaseAtRow = list.get(rowIndex);
@@ -111,7 +110,7 @@ public class PurchaseMovieTableModel extends AbstractTableModel {
      * @return the index of the specified purchased movie
      */
     public int getIndexOfPurchase(Purchase p) {
-        ArrayList<Purchase> list = new ArrayList<>(purchasedMovieData);
+        ArrayList<Purchase> list = new ArrayList<Purchase>(purchasedMovieData);
         return list.indexOf(p);
     }
     

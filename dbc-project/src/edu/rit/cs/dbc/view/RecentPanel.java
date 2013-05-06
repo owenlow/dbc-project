@@ -134,7 +134,7 @@ public class RecentPanel extends javax.swing.JPanel {
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
             selectedRows[rowIndex] = recentTable.convertRowIndexToModel(selectedRows[rowIndex]);
         }
-        Collection<Movie> moviesSelected = new ArrayList<>();
+        Collection<Movie> moviesSelected = new ArrayList<Movie>();
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
             Movie m = recentMovieTableModel.getRecentMovieAt(selectedRows[rowIndex]).getMovie();
             if (m != null) {

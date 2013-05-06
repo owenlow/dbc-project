@@ -271,7 +271,7 @@ public class DatabaseConnection {
                         String rating = resultSet.getString("rating");
                         String year = resultSet.getString("year");
                         Float score = resultSet.getFloat("score");
-                        Collection<String> movieGenres = new ArrayList<>();
+                        Collection<String> movieGenres = new ArrayList<String>();
                         movieGenres.add(genre);
                         Movie movieResult = new Movie( 
                                 movieId, 
@@ -347,7 +347,7 @@ public class DatabaseConnection {
                             String rating = resultSet.getString("rating");
                             String year = resultSet.getString("year");
                             Float score = resultSet.getFloat("score");
-                            Collection<String> movieGenres = new ArrayList<>();
+                            Collection<String> movieGenres = new ArrayList<String>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
                                     movieId, 
@@ -430,7 +430,7 @@ public class DatabaseConnection {
                             String rating = resultSet.getString("rating");
                             String year = resultSet.getString("year");
                             Float score = resultSet.getFloat("score");
-                            Collection<String> movieGenres = new ArrayList<>();
+                            Collection<String> movieGenres = new ArrayList<String>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
                                     movieId, 
@@ -553,7 +553,7 @@ public class DatabaseConnection {
                             String rating = resultSet.getString("rating");
                             String year = resultSet.getString("year");
                             Float score = resultSet.getFloat("score");
-                            Collection<String> movieGenres = new ArrayList<>();
+                            Collection<String> movieGenres = new ArrayList<String>();
                             movieGenres.add(genre);
                             Movie movieResult = new Movie(
                                     movieId, 

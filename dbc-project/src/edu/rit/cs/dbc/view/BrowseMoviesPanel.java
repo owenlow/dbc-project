@@ -209,7 +209,7 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
         for (int selectionIndex = 0; selectionIndex < selection.length; selectionIndex++) {
             selection[selectionIndex] = browseMoviesTable.convertRowIndexToModel(selection[selectionIndex]);
         }
-        Collection<Movie> moviesSelected = new ArrayList<>();
+        Collection<Movie> moviesSelected = new ArrayList<Movie>();
         for (int selectionIndex = 0; selectionIndex < selection.length; selectionIndex++) {
             Movie m = browseMoviesTableModel.getMovieAt(selection[selectionIndex]);
             if (m != null) {
@@ -237,7 +237,7 @@ public class BrowseMoviesPanel extends javax.swing.JPanel {
     private MovieTableModel browseMoviesTableModel = new MovieTableModel();
     
     // sorter object for sorting the table model
-    private TableRowSorter<MovieTableModel> sorter = new TableRowSorter<>(browseMoviesTableModel);
+    private TableRowSorter<MovieTableModel> sorter = new TableRowSorter<MovieTableModel>(browseMoviesTableModel);
     
     // the mediator for sending requests on background threads
     private MovieTableController movieTableController;

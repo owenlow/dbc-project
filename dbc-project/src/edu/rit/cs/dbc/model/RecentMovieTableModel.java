@@ -20,7 +20,7 @@ public class RecentMovieTableModel extends AbstractTableModel {
     };
     
     // the collection of recently watched movie data
-    private Collection<Recent> recentMovieData = new ArrayList<>();
+    private Collection<Recent> recentMovieData = new ArrayList<Recent>();
 
     /**
      * Returns the number of recently watched movies in the table model
@@ -59,32 +59,32 @@ public class RecentMovieTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        ArrayList<Recent> list = new ArrayList<>(recentMovieData);
+        ArrayList<Recent> list = new ArrayList<Recent>(recentMovieData);
         Recent currentRecentMovie = list.get(rowIndex);
         Object returnValue = null;
 
         if (columnIndex >= 0
                 && columnIndex < RECENT_MOVIE_COLUMN_NAMES.length) {
-            switch (getColumnName(columnIndex)) {
-                case "Title":
-                    returnValue = currentRecentMovie.getMovie().getTitle();
-                    break;
-                case "Year":
-                    returnValue = currentRecentMovie.getMovie().getYear();
-                    break;
-                case "Genre":
-                    returnValue = currentRecentMovie.getMovie().getGenres();
-                    break;
-                case "Rating":
-                    returnValue = currentRecentMovie.getMovie().getRating();
-                    break;
-                case "Score":
-                    returnValue = currentRecentMovie.getMovie().getScore();
-                    break;
-                case "Watch Count":
-                    returnValue = currentRecentMovie.getWatchcount();
-                    break;
-            }
+            
+            if(getColumnName(columnIndex).equals("Title"))
+                returnValue = currentRecentMovie.getMovie().getTitle();
+                
+            else if(getColumnName(columnIndex).equals("Year"))
+                returnValue = currentRecentMovie.getMovie().getYear();
+        
+            else if(getColumnName(columnIndex).equals("Genre"))
+                returnValue = currentRecentMovie.getMovie().getGenres();
+                
+            else if(getColumnName(columnIndex).equals("Rating"))
+                returnValue = currentRecentMovie.getMovie().getRating();
+        
+            else if(getColumnName(columnIndex).equals("Score"))
+                returnValue = currentRecentMovie.getMovie().getScore();
+        
+            else if(getColumnName(columnIndex).equals("Watch Count"))
+                returnValue = currentRecentMovie.getWatchcount();
+            
+            
         }
 
         return returnValue;
@@ -96,7 +96,7 @@ public class RecentMovieTableModel extends AbstractTableModel {
      * @return a recently watched movie instance at the specified row
      */
     public Recent getRecentMovieAt(int rowIndex) {
-        ArrayList<Recent> list = new ArrayList<>(recentMovieData);
+        ArrayList<Recent> list = new ArrayList<Recent>(recentMovieData);
         Recent recentMovieAtRow = null;
         if (rowIndex >= 0 && rowIndex < recentMovieData.size()) {
             recentMovieAtRow = list.get(rowIndex);
@@ -111,7 +111,7 @@ public class RecentMovieTableModel extends AbstractTableModel {
      * @return the index of the specified recently watched movie
      */
     public int getIndexOfRecent(Recent r) {
-        ArrayList<Recent> list = new ArrayList<>(recentMovieData);
+        ArrayList<Recent> list = new ArrayList<Recent>(recentMovieData);
         return list.indexOf(r);
     }
 

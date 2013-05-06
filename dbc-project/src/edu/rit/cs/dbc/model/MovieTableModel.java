@@ -20,7 +20,7 @@ public class MovieTableModel extends AbstractTableModel {
     };
     
     // the collection of movie data
-    private Collection<Movie> movieData = new ArrayList<>();
+    private Collection<Movie> movieData = new ArrayList<Movie>();
 
     /**
      * Returns the number of movies in the table model
@@ -65,23 +65,22 @@ public class MovieTableModel extends AbstractTableModel {
         
         if (columnIndex >= 0 && 
                 columnIndex < MOVIE_COLUMN_NAMES.length) {
-            switch (getColumnName(columnIndex)) {
-                case "Title":
+            if(getColumnName(columnIndex).equals("Title"))
                     movieReturnValue = currentMovie.getTitle();
-                    break;
-                case "Year":
-                    movieReturnValue = currentMovie.getYear();
-                    break;
-                case "Genre":
-                    movieReturnValue = currentMovie.getGenres();
-                    break;
-                case "Rating":
-                    movieReturnValue = currentMovie.getRating();
-                    break;
-                case "Score":
-                    movieReturnValue = currentMovie.getScore();
-                    break;
-            }
+            
+            else if(getColumnName(columnIndex).equals("Year"))
+                movieReturnValue = currentMovie.getYear();
+        
+            else if(getColumnName(columnIndex).equals("Genre"))
+                movieReturnValue = currentMovie.getGenres();
+        
+            else if(getColumnName(columnIndex).equals("Rating"))
+                movieReturnValue = currentMovie.getRating();
+        
+            else if(getColumnName(columnIndex).equals("Score"))
+                movieReturnValue = currentMovie.getScore();
+            
+            
         }
         
         return movieReturnValue;
@@ -93,7 +92,7 @@ public class MovieTableModel extends AbstractTableModel {
      * @return a movie instance at the specified row
      */
     public Movie getMovieAt(int rowIndex) {
-        ArrayList<Movie> list = new ArrayList<>(movieData);
+        ArrayList<Movie> list = new ArrayList<Movie>(movieData);
         Movie movieAtRow = null;
         if (rowIndex >= 0 && rowIndex < movieData.size()) {
             movieAtRow = list.get(rowIndex);
@@ -108,7 +107,7 @@ public class MovieTableModel extends AbstractTableModel {
      * @return the index of the specified movie
      */
     public int getIndexOfMovie(Movie m) {
-        ArrayList<Movie> list = new ArrayList<>(movieData);
+        ArrayList<Movie> list = new ArrayList<Movie>(movieData);
         return list.indexOf(m);
     }
     

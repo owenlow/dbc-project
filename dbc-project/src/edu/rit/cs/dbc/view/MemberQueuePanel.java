@@ -220,7 +220,7 @@ public class MemberQueuePanel extends javax.swing.JPanel {
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
             selectedRows[rowIndex] = moviesQueueTable.convertRowIndexToModel(selectedRows[rowIndex]);
         }
-        Collection<Movie> moviesSelected = new ArrayList<>();
+        Collection<Movie> moviesSelected = new ArrayList<Movie>();
         for (int rowIndex = 0; rowIndex < selectedRows.length; rowIndex++) {
             Movie m = queueMoviesTableModel.getMovieAt(selectedRows[rowIndex]);
             if (m != null) {
