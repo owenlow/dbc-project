@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Contributors: Owen Royall-Kahin, Philip Rodriguez, Patrick Duffy
  */
 package edu.rit.cs.dbc.db;
 

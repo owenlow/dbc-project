@@ -1,3 +1,6 @@
+/*
+ * Contributors: Owen Royall-Kahin, Philip Rodriguez, Patrick Duffy
+ */
 package edu.rit.cs.dbc.model;
 
 import java.util.Collection;

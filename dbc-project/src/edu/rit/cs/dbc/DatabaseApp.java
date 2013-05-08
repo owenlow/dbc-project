@@ -1,3 +1,6 @@
+/*
+ * Contributors: Owen Royall-Kahin, Philip Rodriguez, Patrick Duffy
+ */
 package edu.rit.cs.dbc;
 
 import edu.rit.cs.dbc.view.LoginScreen;
